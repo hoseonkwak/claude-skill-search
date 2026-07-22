@@ -1,5 +1,8 @@
 # Claude Skill Search
 
+**🌐 라이브: https://hoseonkwak.github.io/claude-skill-search/** (GitHub Pages · 정적 키워드 버전)
+자연어 **의미검색**은 로컬 앱(`serve.py`) — 백엔드 호스팅은 별도 단계.
+
 흩어진 Claude Skills(공식 마켓플레이스 + 커뮤니티 awesome-리스트)를 한 곳에서
 **용도 기반으로 검색**하는 서비스. 경쟁 서비스 대부분이 "리스트 + 키워드"에서 멈춰
 있는 반면, 이 프로젝트는 **AI 매칭 + 신뢰(티어) 신호**를 차별점으로 삼는다.

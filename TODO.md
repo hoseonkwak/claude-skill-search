@@ -40,7 +40,7 @@
 
 ### 🟠 Tier 3 — 차별화/제품화
 - [~] **신뢰·안전 레이어 (Option B)** — **1차 완료**: `scan_safety.py`가 SKILL.md 스캔(쉘 파이프·rm-rf·프롬프트 인젝션·base64 실행·원격 eval=위험 / 네트워크·시크릿·sudo=주의). 9,691개 스캔 → 안전 5,552·주의 3,921·위험 218. UI에 안전/주의/위험 뱃지 + 플래그. 남은: curated·chat2anyllm 카탈로그도 스캔, 정밀도 개선(오탐↓), 상세 근거 노출. (G2, 브리프 Phase 2)
-- [ ] **실제 배포** — 의미검색이 로컬 백엔드 의존. 호스팅(경량 API) 또는 브라우저 내 임베딩 결정 후 배포
+- [~] **실제 배포** — **정적 키워드 버전 라이브**: GitHub Pages(main:/docs) → https://hoseonkwak.github.io/claude-skill-search/ (`build_site.py`가 docs/ 생성). 남은: 의미검색(하이브리드) 백엔드 호스팅(경량 API) 또는 브라우저 내 임베딩(transformers.js)
 - [~] **소스 대규모 확장** — 1차 완료: 2,139 → **11,965개** (GitHub 품질 레포 스타≥2 수확, `expand_github.py`). 남은: MCP/크로스모델 통합, 리뷰, 추가 샤딩으로 더 확대. (브리프 Phase 3 / Option C)
 
 ### ⚪ Housekeeping
