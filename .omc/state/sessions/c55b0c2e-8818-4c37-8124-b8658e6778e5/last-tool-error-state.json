@@ -1,0 +1,7 @@
+{
+  "tool_name": "Artifact",
+  "tool_input_preview": "{\"file_path\":\"/mnt/e/kwak/dev/claude-skill-search/site/artifact.html\",\"favicon\":\"🔍\",\"title\":\"Skill Finder — Claude Skills 통합 검색\",\"description\":\"모던 애플풍(흰 배경·Claude 코랄·네이비 다크·테마 토글). 11,965개 스킬 집계, 인기순...",
+  "error": "deploy 400: content contains invalid or unpaired escape sequences (decoded to U+FFFD)",
+  "timestamp": "2026-07-22T07:31:12.899Z",
+  "retry_count": 1
+}

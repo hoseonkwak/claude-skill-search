@@ -1,0 +1,13 @@
+# secrets — never commit
+.gh_token
+*.token
+.env
+
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# generated / regenerable via scripts (embed.py / build_site.py)
+data/embeddings.npy
+site/
