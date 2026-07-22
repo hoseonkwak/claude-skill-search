@@ -79,7 +79,7 @@ def find_anchor(kw):
 out = []
 for group, items in (("goal", COLLECTIONS), ("field", DOMAINS)):
     for c in items:
-        res = core.search(c["query"], tier="all", k=120)
+        res = core.search(c["query"], tier="all", k=120, pop=False)
         top = res[0]["score"] if res else 0.0
         urls, seen_repo, owner_ct = [], set(), {}
 

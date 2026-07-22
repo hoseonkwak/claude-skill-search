@@ -40,7 +40,8 @@ a{color:inherit;text-decoration:none}
 
 /* top bar */
 .topbar{display:flex;justify-content:space-between;align-items:center;height:52px}
-.brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15.5px;letter-spacing:-.01em}
+.brand{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15.5px;letter-spacing:-.01em;cursor:pointer}
+.brand:hover .bt,.brand:active{opacity:.85}
 .brand .spark{color:var(--accent);display:flex}
 .theme-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--ink2);cursor:pointer;display:grid;place-items:center;transition:.15s}
 .theme-btn:hover{background:var(--panel-2);color:var(--ink);border-color:var(--line2)}
@@ -78,6 +79,7 @@ a{color:inherit;text-decoration:none}
 .doms .col-chip{justify-content:flex-start;gap:11px;padding:16px;font-size:14px;font-weight:600;border-radius:14px;background:var(--panel);border:1px solid var(--line2)}
 .doms .col-chip .e{font-size:21px}
 .doms .col-chip:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.doms .col-chip.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 .copy{font-family:var(--sans);font-size:11.5px;font-weight:600;color:var(--accent);background:var(--accent-soft);
   border:0;border-radius:7px;padding:5px 11px;cursor:pointer;white-space:nowrap;transition:.12s}
 .copy:hover{background:var(--accent);color:var(--on-accent)}
@@ -232,6 +234,7 @@ function clearCols(){document.querySelectorAll('.col-chip').forEach(x=>x.classLi
 function installCmd(url){const m=(url||'').match(/github\.com\/([^/#?]+)\/([^/#?]+)(?:\/tree\/([^/]+)\/(.+))?/);if(!m)return'# 설치 정보 없음';const owner=m[1],repo=m[2].replace(/\.git$/,''),branch=m[3],path=m[4];const name=(path?path.split('/').pop():repo).replace(/[^a-zA-Z0-9_.-]/g,'-');const src=path?owner+'/'+repo+'/'+path+(branch?'#'+branch:''):owner+'/'+repo;return'npx degit '+src+' ~/.claude/skills/'+name}
 grid.addEventListener('click',e=>{const b=e.target.closest('.copy');if(!b)return;e.preventDefault();navigator.clipboard.writeText(installCmd(b.dataset.url)).then(()=>{const t=b.textContent;b.textContent='복사됨 ✓';b.classList.add('done');setTimeout(()=>{b.textContent=t;b.classList.remove('done')},1400)}).catch(()=>{b.textContent='복사 실패'})});
 document.querySelectorAll('#tier button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tier button').forEach(x=>x.classList.remove('on'));b.classList.add('on');tier=b.dataset.t;clearCols();run()});
+const _brand=document.querySelector('.brand');if(_brand)_brand.onclick=()=>{qEl.value='';document.querySelectorAll('#tier button').forEach((x,i)=>x.classList.toggle('on',i===0));tier='all';clearCols();run()};
 let _d;qEl.addEventListener('input',()=>{clearCols();clearTimeout(_d);_d=setTimeout(run,110)});
 
 function showBest(){mode='best';setSec('인기 Best','GitHub 스타순 · 레포당 1개');hint.innerHTML='';

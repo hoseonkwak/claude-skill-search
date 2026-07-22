@@ -58,6 +58,8 @@ for s in SKILLS:  # attach repo + star count + freshness
     s["flags"] = sf.get("flags", []) if sf else []
 
 BY_URL = {s["url"]: s for s in SKILLS}
+# 인기(스타) 가산치: 검색결과도 카테고리처럼 관련 있는 것 중 인기 스킬을 위로
+_STARBOOST = np.array([math.log10(min(s["stars"] or 0, 80000) + 1) for s in SKILLS], dtype=np.float32)
 
 # ---------- lexical BM25 index ----------
 _TOKEN = re.compile(r"[a-z0-9]+|[가-힣]+")
@@ -149,15 +151,19 @@ def rows_for_urls(urls):
     return [_row(BY_URL[u]) for u in urls if u in BY_URL]
 
 
-def search(query, tier="all", k=25, alpha=0.78, cat=None):
+def search(query, tier="all", k=25, alpha=0.78, cat=None, pop=True):
     """Hybrid: alpha * semantic + (1-alpha) * lexical, both min-max normalized.
     Semantic uses the ORIGINAL query (multilingual model reads KO natively);
-    lexical uses the glossary-EXPANDED query (EN terms help latin keyword hits)."""
+    lexical uses the glossary-EXPANDED query (EN terms help latin keyword hits).
+    pop=True adds a small popularity(stars) boost (user search); pop=False keeps
+    a pure relevance ranking (used by collection generation's gate)."""
     v = _encode([query])[0]
     v = v / (np.linalg.norm(v) or 1.0)
     sem = np.clip(EMB @ v, 0, None)
     lex = _bm25(tok(expand(query)))
     final = alpha * _norm(sem) + (1 - alpha) * _norm(lex)
+    if pop:
+        final = final + 0.035 * _STARBOOST
     order = np.argsort(-final)
     out = []
     for i in order:
