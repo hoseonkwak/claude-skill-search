@@ -76,10 +76,6 @@ def find_anchor(kw):
     return {"url": b["url"], "desc": b["description"], "name": b["name"], "stars": b.get("stars")}
 
 
-def _pop(r):
-    return (min(r.get("stars") or 0, STAR_CAP), r["score"])
-
-
 out = []
 for group, items in (("goal", COLLECTIONS), ("field", DOMAINS)):
     for c in items:
@@ -96,24 +92,28 @@ for group, items in (("goal", COLLECTIONS), ("field", DOMAINS)):
             owner_ct[own] = owner_ct.get(own, 0) + 1
             urls.append(r["url"])
 
-        for kw in ANCHORS.get(c["id"], []):                 # 앵커(전체 데이터에서) 먼저
-            a = find_anchor(kw)
-            if a:
-                take(a)
+        def gated(rank_max, score_frac):                    # 관련 + 非모노레포(자동채움)
+            return [r for i, r in enumerate(res)
+                    if r["desc"] and i < rank_max and r["score"] >= top * score_frac
+                    and (r.get("stars") or 0) <= MEGA_STAR]
 
-        def fill(rank_max, score_frac):                     # 게이트 + 모노레포 제외 → 인기순
-            g = [r for i, r in enumerate(res)
-                 if r["desc"] and i < rank_max and r["score"] >= top * score_frac
-                 and (r.get("stars") or 0) <= MEGA_STAR]
-            g.sort(key=_pop, reverse=True)
-            for r in g:
+        def pick(pool):                                     # 스타(인기)순 — 앵커도 이 순위에 섞임
+            pool.sort(key=lambda r: ((r.get("stars") or 0), r.get("score", 0)), reverse=True)
+            for r in pool:
                 if len(urls) >= 18:
                     break
                 take(r)
 
-        fill(35, 0.80)
+        anchors = []                                        # 앵커 = 유명 스킬 "포함" 보장(맨 위 강제 X)
+        for kw in ANCHORS.get(c["id"], []):
+            a = find_anchor(kw)
+            if a:
+                a["score"] = 1.0
+                anchors.append(a)
+
+        pick(anchors + gated(35, 0.80))
         if len(urls) < 10:                                  # 빈약하면 완화 (예: DB)
-            fill(70, 0.62)
+            pick(gated(70, 0.62))
         out.append({"id": c["id"], "emoji": c["emoji"], "name": c["name"],
                     "query": c["query"], "urls": urls, "group": group})
         print(f"  [{group}] {c['emoji']} {c['name']}: {len(urls)}", flush=True)

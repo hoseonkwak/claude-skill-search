@@ -269,8 +269,8 @@
       "name": "개발",
       "query": "코드 개발 프로그래밍 리팩터링 디버깅 software development coding",
       "urls": [
-        "https://github.com/DietrichGebert/ponytail",
         "https://github.com/obra/superpowers",
+        "https://github.com/DietrichGebert/ponytail",
         "https://github.com/codeaashu/claude-code",
         "https://github.com/NeoLabHQ/context-engineering-kit/tree/master/plugins/ddd/skills/software-architecture",
         "https://github.com/amElnagdy/guard-skills/tree/master/skills/clean-code-guard",
