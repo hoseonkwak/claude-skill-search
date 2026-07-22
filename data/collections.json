@@ -20,8 +20,12 @@
         "https://github.com/kangarooking/promo-creator-skills/tree/main/promo-asset-producer",
         "https://github.com/AutomateLab-tech/publishing-skills/tree/main/skills/blog-figure-svg",
         "https://github.com/yrris/pro-agent/tree/main/cognition/runtime/skills/image-style-library",
-        "https://github.com/jmxt3/gitscape.ai/tree/main/.agents/skills/brandkit"
-      ]
+        "https://github.com/jmxt3/gitscape.ai/tree/main/.agents/skills/brandkit",
+        "https://github.com/nexu-io/open-design/tree/main/skills/brandkit",
+        "https://github.com/veryCoolTimo/imagegen-skills",
+        "https://github.com/aiworkskills/wechat-article-skills/tree/main/skills/aws-wechat-article-images"
+      ],
+      "group": "goal"
     },
     {
       "id": "landing",
@@ -43,8 +47,12 @@
         "https://github.com/GulajavaMinistudio/awesome-copilot-id/tree/main/supplementary-skill/html-css-responsive",
         "https://github.com/QinghongLin/data2story-skill/tree/main/skills/frontend-design",
         "https://github.com/SZoloth/skill-pack/tree/main/skills/frontend-design",
-        "https://github.com/ThinkInAIXYZ/deepchat/tree/dev/resources/skills/frontend-design"
-      ]
+        "https://github.com/ThinkInAIXYZ/deepchat/tree/dev/resources/skills/frontend-design",
+        "https://github.com/ViryaZheng/recomby-geo/tree/main/plugins/recomby-geo/skills/frontend-design",
+        "https://github.com/ursazoo/lanhu-to-code/tree/main/skills/code-format",
+        "https://github.com/Akshat2634/Codelens-AI"
+      ],
+      "group": "goal"
     },
     {
       "id": "fullstack",
@@ -66,8 +74,12 @@
         "https://github.com/alexander-danilenko/cortex-ai-skills/tree/main/skills/dotnet-core",
         "https://github.com/UnitOneAI/SecuritySkills/tree/main/skills/appsec/api-security",
         "https://github.com/supabase-community/supabase-plugin",
-        "https://github.com/exasol-labs/exasol-agent-skills/tree/main/plugins/exasol/skills/exasol-jdbc-virtual-schemas"
-      ]
+        "https://github.com/exasol-labs/exasol-agent-skills/tree/main/plugins/exasol/skills/exasol-jdbc-virtual-schemas",
+        "https://github.com/laolaoshiren/claude-code-skills-zh/tree/main/skills/db-migrator",
+        "https://github.com/bovinphang/frontend-craft/tree/main/skills/fec-api-integration",
+        "https://github.com/sordi-ai/skill-everything/tree/main/skills/db-schema"
+      ],
+      "group": "goal"
     },
     {
       "id": "office",
@@ -89,8 +101,12 @@
         "https://github.com/dreamworker0/urimal-for-socialworker/tree/main/skills/kordoc",
         "https://github.com/hankunpeng/skills/tree/main/skills/llmdocx",
         "https://github.com/zouchenzhen/docx-template-translator-skill/tree/main/skills/docx-template-translator",
-        "https://github.com/woodfishhhh/EZ_math_model/tree/main/skills/ez-math-model/tools/docx"
-      ]
+        "https://github.com/woodfishhhh/EZ_math_model/tree/main/skills/ez-math-model/tools/docx",
+        "https://github.com/AutumnsGrove/ClaudeSkills/tree/master/xlsx",
+        "https://github.com/lawve-ai/awesome-legal-skills/tree/main/skills/tabular-review-lawvable",
+        "https://github.com/heshengtao/super-agent-party/tree/main/skills/officeCLI"
+      ],
+      "group": "goal"
     },
     {
       "id": "deck",
@@ -112,8 +128,12 @@
         "https://github.com/AutumnsGrove/ClaudeSkills/tree/master/pptx",
         "https://github.com/AlemTuzlak/skills/tree/main/skills/presentation",
         "https://github.com/proyecto26/slides-ai-plugin/tree/main/skills/pptx-slides",
-        "https://github.com/charlieviettq/awesome-agent-skill/tree/main/.claude/skills/pptx"
-      ]
+        "https://github.com/charlieviettq/awesome-agent-skill/tree/main/.claude/skills/pptx",
+        "https://github.com/jjmartres/opencode/tree/main/opencode/skills/marp-slide",
+        "https://github.com/jjmartres/ai-coding-agents/tree/main/shared/.ai-agents/skills/marp-slide",
+        "https://github.com/softaworks/agent-toolkit/tree/main/skills/marp-slide"
+      ],
+      "group": "goal"
     },
     {
       "id": "review",
@@ -135,8 +155,12 @@
         "https://github.com/alibaba/skill-up/tree/main/e2e/testdata/agent-judge-criteria",
         "https://github.com/Borda/AI-Rig",
         "https://github.com/tenequm/skills/tree/main/skills/polish",
-        "https://github.com/Aurite-ai/agent-verifier/tree/main/skills/verify-quality"
-      ]
+        "https://github.com/Aurite-ai/agent-verifier/tree/main/skills/verify-quality",
+        "https://github.com/skrun-dev/skrun/tree/main/agents/code-review",
+        "https://github.com/DominikTobureto/awesome-grok-build/tree/main/.grok/skills/agentic-code-review",
+        "https://github.com/ThinkInAIXYZ/deepchat/tree/dev/resources/skills/code-review"
+      ],
+      "group": "goal"
     },
     {
       "id": "security",
@@ -158,8 +182,12 @@
         "https://github.com/give-jd/deep-security-check",
         "https://github.com/telagod/code-abyss/tree/main/skills/analyzing-security",
         "https://github.com/trailofbits/skills",
-        "https://github.com/Orizon-eu/claude-code-pentest/tree/main/webapp-exploit-hunter"
-      ]
+        "https://github.com/Orizon-eu/claude-code-pentest/tree/main/webapp-exploit-hunter",
+        "https://github.com/rhysha/claude-security-research-skill",
+        "https://github.com/davila7/claude-code-templates",
+        "https://github.com/maddhruv/absolute/tree/main/skills/absolute-audit"
+      ],
+      "group": "goal"
     },
     {
       "id": "data",
@@ -181,8 +209,12 @@
         "https://github.com/FrankChen021/datastoria/tree/master/resources/skills/sql-expert",
         "https://github.com/nimadorostkar/Claude-Skills-collection/tree/main/skills/languages/sql",
         "https://github.com/LeoLin990405/r-analytics-skill/tree/main/sub-skills/r-data",
-        "https://github.com/JeonKH81/MediStat-EDA"
-      ]
+        "https://github.com/JeonKH81/MediStat-EDA",
+        "https://github.com/ystemsrx/sql_to_ER/tree/master/skills/sql2er",
+        "https://github.com/cisco-ai-defense/skill-scanner/tree/main/evals/skills/resource-exhaustion/infinite-loop",
+        "https://github.com/lawve-ai/awesome-legal-skills/tree/main/skills/xlsx-processing-openai"
+      ],
+      "group": "goal"
     },
     {
       "id": "devops",
@@ -204,8 +236,12 @@
         "https://github.com/Asif2BD/xCloud-Docker-Deploy-Skill",
         "https://github.com/MicrosoftDocs/Agent-Skills/tree/main/skills/azure-batch",
         "https://github.com/Insolvent-pyrene754/claude-code-server-side-swift-skills",
-        "https://github.com/Orizon-eu/claude-code-pentest/tree/main/cloud-pivot-finder"
-      ]
+        "https://github.com/Orizon-eu/claude-code-pentest/tree/main/cloud-pivot-finder",
+        "https://github.com/sudais-khalid/vibe-ship",
+        "https://github.com/melissa-pereira-deel/claude-code-server-side-swift-skills/tree/main/skills/xcode-cloud",
+        "https://github.com/harness/harness-skills/tree/main/skills/enforce-sbom"
+      ],
+      "group": "goal"
     },
     {
       "id": "vibe",
@@ -227,8 +263,336 @@
         "https://github.com/sequenzia/agent-alchemy/tree/main/claude/tdd-tools/skills/tdd-cycle",
         "https://github.com/amondnet/yoonmoon/tree/main/skills/proofread",
         "https://github.com/easyzoom/aix-skills/tree/main/skills/cortex-m-debug",
-        "https://github.com/sordi-ai/skill-everything/tree/main/skills/tdd"
-      ]
+        "https://github.com/sordi-ai/skill-everything/tree/main/skills/tdd",
+        "https://github.com/ollygarden/opentelemetry-agent-skills/tree/main/skills/otel-ottl",
+        "https://github.com/Adancurusul/embedded-debugger-mcp/tree/main/skills/embedded-debugger",
+        "https://github.com/PrabhdeepSingh/claude-plugins"
+      ],
+      "group": "goal"
+    },
+    {
+      "id": "f_dev",
+      "emoji": "💻",
+      "name": "개발",
+      "query": "코드 개발 프로그래밍 리팩터링 디버깅 software development coding",
+      "urls": [
+        "https://github.com/telagod/code-abyss/tree/main/skills/developing-software",
+        "https://github.com/fanqingxuan/awesome-skills/tree/main/skills/code-simplifier",
+        "https://github.com/athola/skrills/tree/master/assets/demo-skills/coding-assistant",
+        "https://github.com/rgranet/project-coding-companion-skill/tree/main/project-coding-companion",
+        "https://github.com/YiShu5/claude-skills/tree/master/skills/vibe-coding-prd",
+        "https://github.com/vinvcn/addyosmani-agent-skills-zh/tree/main/skills/code-simplification",
+        "https://github.com/opitaru-sys/codesplain",
+        "https://github.com/GergKllai1/coding-conventions",
+        "https://github.com/shinpr/agentic-code/tree/main/.agents/skills/coding-rules",
+        "./plugins/csharp-lsp",
+        "./plugins/clangd-lsp",
+        "https://github.com/kangarooking/system-prompt-skills/tree/main/code-engineering",
+        "https://github.com/Dqz00116/skill-lib/tree/main/code-generator",
+        "https://github.com/arome3/code-to-content",
+        "https://github.com/decebals/claude-code-java",
+        "https://www.qt.io/",
+        "https://github.com/shinpr/ai-coding-project-boilerplate/tree/main/.claude/skills-ja/coding-standards",
+        "https://github.com/PrabhdeepSingh/claude-plugins"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_front",
+      "emoji": "🎨",
+      "name": "프론트엔드·UI",
+      "query": "프론트엔드 UI 컴포넌트 react css 웹 인터페이스 디자인 frontend",
+      "urls": [
+        "https://github.com/ViryaZheng/recomby-geo/tree/main/plugins/recomby-geo/skills/frontend-design",
+        "https://github.com/ThinkInAIXYZ/deepchat/tree/dev/resources/skills/frontend-design",
+        "https://github.com/SZoloth/skill-pack/tree/main/skills/frontend-design",
+        "https://github.com/connerkward/ckw-design-skill",
+        "https://github.com/anthropics/skills/tree/main/skills/web-artifacts-builder",
+        "https://github.com/Akshat2634/Codelens-AI",
+        "https://github.com/plugin87/ux-ui-agent-skills/tree/main/.claude/skills/design-code",
+        "https://github.com/oikon48/cc-frontend-skills/tree/main/skills/frontend-design-system",
+        "https://github.com/waterfeet/DoroPet_V3/tree/master/opendoro/src/skills/frontend-design",
+        "https://github.com/inbharatai/claude-skills/tree/main/skills/ui-mockup",
+        "https://github.com/ianho7/ai-friendly-web-design-skill/tree/main/skills/ai-friendly-web-design",
+        "https://github.com/AnayDhawan/Components",
+        "https://github.com/gongnyang/deck-factory/tree/master/skills/deck-factory",
+        "https://github.com/h3nryprod01/design-taste",
+        "https://github.com/Luispitik/salgadoia-web-design-engineer-pro",
+        "https://github.com/GulajavaMinistudio/awesome-copilot-id/tree/main/supplementary-skill/html-css-responsive",
+        "https://github.com/mjunaidca/mjs-agent-skills/tree/main/.claude/skills/styling-with-shadcn",
+        "https://github.com/TheGoat395/Codex-Skills/tree/main/skills/react-component-craft"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_docs",
+      "emoji": "📄",
+      "name": "문서",
+      "query": "문서 작성 README API 문서 documentation markdown 요약",
+      "urls": [
+        "https://github.com/anthropics/skills",
+        "https://github.com/AutumnsGrove/ClaudeSkills/tree/master/markdown-pro",
+        "https://github.com/AsiaOstrich/universal-dev-skills/tree/main/skills/documentation-guide",
+        "https://github.com/MoizIbnYousaf/Ai-Agent-Skills/tree/main/skills/code-documentation",
+        "https://github.com/Notysoty/openagentskills/tree/main/skills/api-docs-generator",
+        "https://github.com/ArabelaTso/Skills-4-SE/tree/main/skills/readme-generator",
+        "https://github.com/huangjia2019/claude-code-engineering/tree/main/04-Skills/projects/02-progressive-skill/.claude/skills/api-documenting",
+        "https://platform.claude.com/docs/en/api/beta/skills",
+        "https://github.com/geekjourneyx/readme-generator",
+        "https://github.com/NintendaDev/unikit-ai/tree/main/skills/unikit-docs",
+        "https://github.com/laolaoshiren/claude-code-skills-zh/tree/main/skills/zh-readme",
+        "https://github.com/YangsonHung/awesome-agent-skills/tree/main/skills/en/multi-lang-readme",
+        "https://github.com/api-platform/skillset/tree/main/skills/api-docs",
+        "https://github.com/Varnan-Tech/opendirectory/tree/main/skills/docs-from-code",
+        "https://github.com/KieranGao/general-readme-skill",
+        "https://github.com/tenequm/skills/tree/main/skills/standard-readme",
+        "https://github.com/greglas75/zuvo",
+        "https://github.com/GulajavaMinistudio/awesome-copilot-id/tree/main/supplementary-skill/create-readme"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_data",
+      "emoji": "📊",
+      "name": "데이터",
+      "query": "데이터 분석 시각화 스프레드시트 통계 data analysis visualization",
+      "urls": [
+        "https://github.com/Varnan-Tech/opendirectory/tree/main/skills/graphic-chart",
+        "https://github.com/inbharatai/claude-skills/tree/main/skills/data-viz",
+        "https://github.com/yrris/pro-agent/tree/main/cognition/runtime/skills/chart-visualization",
+        "https://github.com/jaechang-hits/SciAgent-Skills/tree/main/legacy/seaborn-statistical-visualization",
+        "https://github.com/TobiasBlask/open-paper-machine/tree/main/scientific-skills/plotly",
+        "https://github.com/JeonKH81/MediStat-EDA",
+        "https://github.com/caylent/tufte-data-viz",
+        "https://github.com/anthropics/skills",
+        "https://github.com/LeoLin990405/r-analytics-skill",
+        "https://github.com/HugoVeltorai/publicskills/tree/main/skills/tufte-viz",
+        "https://github.com/skrun-dev/skrun/tree/main/agents/data-analyst",
+        "https://github.com/kgraph57/mckinsey-style-visualization-skill",
+        "https://github.com/cisco-ai-defense/skill-scanner/tree/main/evals/skills/resource-exhaustion/infinite-loop",
+        "https://github.com/FrankChen021/datastoria/tree/master/resources/skills/visualization",
+        "https://github.com/petrkindlmann/qa-skills/tree/main/skills/visual-testing",
+        "https://github.com/TseringYuu/anyviz",
+        "https://github.com/countbot-ai/CountBot/tree/main/workspace/skills/image-analysis",
+        "https://github.com/richard-kim-79/archora-skills/tree/main/skills/figure"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_db",
+      "emoji": "🗄️",
+      "name": "데이터베이스",
+      "query": "데이터베이스 SQL 쿼리 스키마 마이그레이션 database postgres",
+      "urls": [
+        "https://github.com/CodelyTV/agentic_programming-course/tree/main/05-mcps/3-mcp_vs_cli/2-simple_cli/.agents/skills/postgres",
+        "https://github.com/sanjay3290/ai-skills/tree/main/skills/postgres",
+        "https://cloud.google.com/sql",
+        "https://github.com/nimadorostkar/Claude-Skills-collection/tree/main/skills/data/postgres",
+        "https://github.com/EXboys/evotown/tree/main/backend/arena_skills/database-query",
+        "https://github.com/timescale/pg-aiguide",
+        "https://github.com/saeed-vayghan/gemini-agent-skills/tree/master/.gemini/skills/sql-pro",
+        "https://github.com/Microck/ordinary-claude-skills/tree/main/skills_all/sql",
+        "https://github.com/ancoleman/ai-design-components/tree/main/skills/optimizing-sql",
+        "https://github.com/first-fluke/oh-my-agent/tree/main/.agents/skills/oma-db",
+        "https://github.com/MoizIbnYousaf/Ai-Agent-Skills/tree/main/skills/database-design",
+        "https://github.com/ccheney/robust-skills/tree/main/skills/postgres-drizzle",
+        "https://github.com/AutumnsGrove/ClaudeSkills/tree/master/sql-expert",
+        "https://github.com/cisco-ai-defense/skill-scanner/tree/main/evals/skills/sql-injection/database-query",
+        "https://github.com/gemini-cli-extensions/cloud-sql-mysql",
+        "https://github.com/0xGhostCAT/claude-ai-cyber-security-skills/tree/main/skills/14-sqli",
+        "https://github.com/gemini-cli-extensions/oracledb",
+        "https://github.com/DojoCodingLabs/code-sensei/tree/main/skills/databases"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_sec",
+      "emoji": "🛡️",
+      "name": "보안",
+      "query": "보안 취약점 스캔 인증 security vulnerability auth",
+      "urls": [
+        "https://github.com/Masriyan/Claude-Code-CyberSecurity-Skill/tree/main/skills/09-web-security",
+        "https://github.com/Mikaru0Mystic/sectinel/tree/main/arsenal/cybersecurity-skills/skills/owasp-audit",
+        "https://github.com/Chipagosfinest/enterprise-team/tree/main/enterprise-team/skills/security-catchall",
+        "https://github.com/maddhruv/absolute/tree/main/skills/absolute-audit",
+        "https://github.com/Ksx9797/security-sweep-plugin",
+        "https://github.com/ToruAI/toru-claude-agents/tree/main/skills/dev-security",
+        "https://github.com/agamm/claude-code-owasp/tree/main/.claude/skills/owasp-security",
+        "https://github.com/anthropics/skills",
+        "https://github.com/DominikTobureto/awesome-grok-build/tree/main/.grok/skills/security-audit",
+        "https://github.com/Bbk-man/claude-code-owasp",
+        "https://github.com/trailofbits/skills",
+        "https://github.com/aws-samples/sample-devops-agent-tools/tree/main/skills/enrich-with-aws-security-agent",
+        "https://github.com/addyosmani/agent-skills/tree/main/skills/security-and-hardening",
+        "https://github.com/KevinKE93/Dev_Agent_OPC/tree/main/dev-agent/skills/security-and-hardening",
+        "https://github.com/telagod/code-abyss/tree/main/skills/securing-systems",
+        "https://github.com/YousefNabil-SOC/claude-apex",
+        "https://github.com/Eyadkelleh/awesome-skills-security/tree/main/skills/security-fuzzing",
+        "https://github.com/eigent-ai/eigent/tree/main/resources/example-skills/skill-security-auditor"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_ops",
+      "emoji": "🚀",
+      "name": "DevOps",
+      "query": "배포 CI CD 도커 컨테이너 인프라 클라우드 deployment devops",
+      "urls": [
+        "https://github.com/BagelHole/DevOps-Security-Agent-Skills/tree/main/devops/ci-cd/azure-devops",
+        "https://github.com/Insolvent-pyrene754/claude-code-server-side-swift-skills",
+        "https://github.com/melissa-pereira-deel/claude-code-server-side-swift-skills/tree/main/skills/xcode-cloud",
+        "https://github.com/euwebertdefreitas/ai-skills-for-claude-code/tree/main/skills/especialista-em-ci-cd",
+        "https://github.com/popmechanic/VibesOS/tree/main/skills/cloudflare",
+        "https://github.com/DevelopersGlobal/ai-agent-skills/tree/main/skills/ci-cd-pipelines",
+        "https://github.com/Chipagosfinest/enterprise-team/tree/main/enterprise-team/skills/infrastructure-catchall",
+        "https://github.com/anthropics/skills",
+        "https://github.com/DojoCodingLabs/code-sensei/tree/main/skills/deployment",
+        "https://github.com/awslabs/agent-plugins",
+        "https://github.com/Amey-Thakur/AI-SKILLS",
+        "https://github.com/microsoft/GitHub-Copilot-for-Azure/tree/main/plugin/skills/azure-deploy",
+        "https://github.com/KevinKE93/Dev_Agent_OPC/tree/main/dev-agent/skills/ci-cd-and-automation",
+        "https://github.com/addyosmani/agent-skills/tree/main/skills/ci-cd-and-automation",
+        "https://github.com/AtulPurohit/Antigravity-Awesome-Skills",
+        "https://github.com/vinvcn/addyosmani-agent-skills-zh/tree/main/skills/ci-cd-and-automation",
+        "https://github.com/labring/sealos-skills/tree/main/skills/cloud-native-readiness",
+        "https://github.com/sudais-khalid/vibe-ship"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_ai",
+      "emoji": "🤖",
+      "name": "AI·에이전트",
+      "query": "AI 에이전트 LLM 프롬프트 MCP agent orchestration",
+      "urls": [
+        "https://github.com/itsmostafa/llm-engineering-skills/tree/main/skills/agents",
+        "https://github.com/api-platform/skillset/tree/main/skills/api-platform-mcp",
+        "https://github.com/ReinaMacCredy/maestro/tree/main/.claude/skills/mcp-for-agents",
+        "https://github.com/jnMetaCode/superpowers-zh/tree/main/skills/mcp-builder",
+        "https://github.com/olanokhin/agent-security-skill/tree/main/skills/agent-security",
+        "https://github.com/czlonkowski/n8n-skills",
+        "https://github.com/waynesutton/convexskills/tree/main/skills/convex-agents",
+        "https://github.com/gmaxxxie/ai-native-product-agent-skills/tree/main/orchestrator",
+        "https://quarkus.io",
+        "https://github.com/butterbase-ai/butterbase-skills/tree/main/skills/agents",
+        "https://github.com/microsoft/GitHub-Copilot-for-Azure/tree/main/plugin/skills/azure-aigateway",
+        "https://github.com/adriannoes/awesome-agentic-ai",
+        "https://github.com/DouyuShinyruo/One-Person-Company-Skill",
+        "https://github.com/0xabrar/gstack-distilled/tree/main/skills/agent-management",
+        "https://github.com/itallstartedwithaidea/agent-skills/tree/main/skills/productivity/ai-chat-studio",
+        "https://github.com/alirezarezvani/claude-code-skill-factory/tree/dev/generated-skills/agent-factory",
+        "https://github.com/keysersoose/claude-agent-builder",
+        "https://github.com/kangarooking/system-prompt-skills/tree/main/agent-delegation"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_test",
+      "emoji": "🧪",
+      "name": "테스트",
+      "query": "테스트 유닛테스트 E2E 품질 test testing qa",
+      "urls": [
+        "https://github.com/AsiaOstrich/universal-dev-skills/tree/main/skills/testing-guide",
+        "https://github.com/shinpr/agentic-code/tree/main/.agents/skills/integration-e2e-testing",
+        "https://github.com/alex-feel/claude-code-toolbox",
+        "https://github.com/JasonxzWen/harness-hub/tree/main/skills/e2e-testing",
+        "https://github.com/billy-enrizky/openbrowser-ai/tree/main/plugin/skills/e2e-testing",
+        "https://github.com/loulanyue/awesome-claude-notes/tree/main/skills/e2e-testing",
+        "https://github.com/bovinphang/frontend-craft/tree/main/skills/fec-e2e-testing",
+        "https://github.com/alexander-danilenko/cortex-ai-skills/tree/main/skills/testing",
+        "https://github.com/petrkindlmann/qa-skills/tree/main/skills/ai-qa-review",
+        "https://github.com/jmr85/e2e-agent-skills/tree/main/skills/playwright-automation-expert",
+        "https://github.com/anthropics/skills",
+        "https://github.com/AI-Builder-Club/skills/tree/main/skills/e2e-setup",
+        "https://github.com/burhankhatri/e2e-testing/tree/main/skills/e2e-playwright",
+        "https://github.com/shinpr/codex-workflows/tree/main/.agents/skills/testing",
+        "https://github.com/chrisallenlane/claude-swe-workflows/tree/master/skills/review-test",
+        "https://github.com/voidmatcha/e2e-skills",
+        "https://github.com/NickCrew/Claude-Cortex/tree/main/skills/test-review",
+        "https://github.com/VisionForge-OU/foreman/tree/main/src/foreman/skills/foreman-web-testing"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_auto",
+      "emoji": "⚙️",
+      "name": "자동화",
+      "query": "자동화 워크플로우 스크립트 배치 automation workflow",
+      "urls": [
+        "https://github.com/uvwt/agentdock/tree/main/skill-sources/desktop",
+        "https://github.com/pessini/langgraph-skills-agent/tree/main/graphs/skills_agent/skills/n8n-skills",
+        "https://github.com/OthmanAdi/planning-with-files",
+        "https://github.com/ZhixiangLuo/10xProductivity/tree/main/.cursor/skills/create-workflow",
+        "https://github.com/arimanyus/hermes-merchant/tree/main/browser-harness-ats-automation",
+        "https://github.com/breaking-brake/cc-wf-studio/tree/main/.roo/skills/cc-workflow-ai-editor",
+        "https://github.com/gokapso/agent-skills/tree/master/skills/automate-whatsapp",
+        "https://github.com/buildoak/fieldwork-skills/tree/main/skills/browser-ops",
+        "https://github.com/anthropics/skills",
+        "https://github.com/rorkai/app-store-connect-cli-skills/tree/main/skills/asc-workflow",
+        "https://github.com/masteranime/n8n-claude-skills/tree/main/skills/workflow-architect",
+        "https://github.com/diagrid-labs/dapr-skills/tree/main/skills/create-workflow-from-diagram",
+        "https://github.com/alirezarezvani/gaios/tree/dev/.claude/skills/workflow",
+        "https://github.com/Masriyan/Claude-Code-CyberSecurity-Skill/tree/main/skills/11-csoc-automation",
+        "https://github.com/spencermarx/open-code-review",
+        "https://github.com/lackeyjb/playwright-skill",
+        "https://github.com/VikashLoomba/agentprism-workflows",
+        "https://github.com/EAIconsulting/cowork-skills-library/tree/main/skills/workflow-builder"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_api",
+      "emoji": "🔗",
+      "name": "API·통합",
+      "query": "API 통합 integration webhook 서드파티 connect",
+      "urls": [
+        "https://github.com/waynesutton/convexskills/tree/main/skills/convex-http-actions",
+        "https://github.com/youdotcom-oss/agent-skills/tree/main/skills/youdotcom-api",
+        "https://github.com/anthropics/skills",
+        "https://github.com/Impertio-Studio/Frappe_Claude_Skill_Package/tree/main/skills/source/core/frappe-core-api",
+        "https://github.com/302ai/302AI-API-Integration-Skill",
+        "https://github.com/bovinphang/frontend-craft/tree/main/skills/fec-api-integration",
+        "https://github.com/tonylofgren/aurora-smart-home/tree/main/api-catalog",
+        "https://github.com/maton-ai/api-gateway-skill/tree/main/providers/codex/plugin/skills/api-gateway",
+        "https://github.com/afu-it/malaysia-payment-gateway/tree/main/setup-curlec",
+        "https://github.com/umarey/BML-Connect-Claude-Code-skill",
+        "https://github.com/loulanyue/awesome-claude-notes/tree/main/skills/x-api",
+        "https://github.com/mturac/everything-openai-codex/tree/main/skills/x-api",
+        "https://github.com/uvwt/agentdock/tree/main/skill-sources/openlist",
+        "https://github.com/itsmostafa/aws-agent-skills/tree/main/skills/api-gateway",
+        "https://github.com/membranedev/application-skills/tree/main/skills/wb",
+        "https://github.com/lzwme/finance-quant-skills/tree/main/skills/joinquant-docs",
+        "https://github.com/linehaul-ai/linehaulai-claude-marketplace",
+        "https://github.com/seranking/seo-skills/tree/main/skills/seo-api"
+      ],
+      "group": "field"
+    },
+    {
+      "id": "f_mkt",
+      "emoji": "📈",
+      "name": "기획·마케팅",
+      "query": "기획 마케팅 콘텐츠 SEO 제품관리 marketing product content",
+      "urls": [
+        "https://github.com/Chipagosfinest/enterprise-team/tree/main/enterprise-team/skills/marketing-catchall",
+        "https://github.com/schwepps/skills/tree/main/seo-content-audit",
+        "https://github.com/Yaroslavle/seo-content-writer-claude-skill",
+        "https://github.com/lionkiii/claude-seo-skills/tree/main/skills/seo",
+        "https://github.com/Hainrixz/claude-seo-ai/tree/main/skills/seo-ecommerce",
+        "https://github.com/inerrata/brief/tree/main/_unpacked/marketing",
+        "https://github.com/mturac/everything-openai-codex/tree/main/skills/seo",
+        "https://github.com/seranking/seo-skills/tree/main/skills/seo-plan",
+        "https://github.com/allinherog-star/ai-skills/tree/main/skills/ai-seo-3",
+        "https://github.com/Thibaultbm/claude-seo-geo/tree/main/skills/seo-content-product-page",
+        "https://github.com/nostrband/ServiceGraph/tree/main/skills/find-marketing-agency",
+        "https://github.com/sociilabs/claude-content-writer",
+        "https://github.com/hospitalityos/hotel-ai-skills/tree/main/hotel-intelligence-suite/skills/content-engine",
+        "https://github.com/infranodus/skills/tree/master/skill-seo-analysis",
+        "https://github.com/TheGoat395/Codex-Skills/tree/main/skills/seo-technical-qa",
+        "https://github.com/DouyuShinyruo/One-Person-Company-Skill/tree/main/agents/marketing-godin",
+        "https://github.com/Fmarzochi/EGC",
+        "https://github.com/AlemTuzlak/skills/tree/main/skills/marketing-brief"
+      ],
+      "group": "field"
     }
   ]
 }

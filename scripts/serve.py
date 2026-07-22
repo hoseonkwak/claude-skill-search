@@ -23,17 +23,18 @@ CAT_OPTS = "".join(f'<option value="{escape(c, quote=True)}">{escape(c)}</option
 _col_path = core.DATA / "collections.json"
 COLLECTIONS = json.loads(_col_path.read_text(encoding="utf-8"))["collections"] if _col_path.exists() else []
 COL_BY_ID = {c["id"]: c for c in COLLECTIONS}
-COL_META = [{"id": c["id"], "emoji": c["emoji"], "name": c["name"]} for c in COLLECTIONS]
+COL_META = [{"id": c["id"], "emoji": c["emoji"], "name": c["name"], "group": c.get("group", "goal")}
+            for c in COLLECTIONS]
 print(f"ready: {N} skills, {N_CUR} curated, {N_STAR} starred, {len(COLLECTIONS)} collections", flush=True)
 
 CONTROLLER = """
 async function loadBest(){mode='best';setSec('인기 Best','GitHub 스타순 · 레포당 1개');hint.innerHTML='';
-  const p=new URLSearchParams({tier:tier,k:30});if(catEl.value)p.set('cat',catEl.value);
+  const p=new URLSearchParams({tier:tier,k:30});
   const r=await fetch('/api/best?'+p);const j=await r.json();paint(j.results||[])}
 let _seq=0;
-async function run(){const q=qEl.value.trim();if(!q&&!catEl.value){loadBest();return}
-  mode='search';const my=++_seq;setSec(q?'검색 결과':'카테고리','');
-  const p=new URLSearchParams({q:q,tier:tier,k:30});if(catEl.value)p.set('cat',catEl.value);
+async function run(){const q=qEl.value.trim();if(!q){loadBest();return}
+  mode='search';const my=++_seq;setSec('검색 결과','');
+  const p=new URLSearchParams({q:q,tier:tier,k:30});
   try{const r=await fetch('/api/search?'+p);const j=await r.json();if(my!==_seq)return;
   const res=j.results||[];secc.textContent=q?('"'+j.query+'"'):'';hint.innerHTML='<b>'+res.length+'</b>건';paint(res)}
   catch(e){if(my===_seq){grid.innerHTML='';msg.style.display='';msg.textContent='검색 오류: '+e}}}

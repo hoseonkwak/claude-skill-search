@@ -52,7 +52,7 @@ _col_urls = {u for c in collections for u in c["urls"]}
 _have = {s["url"] for s in subset}
 subset += [s for s in skills if s["url"] in _col_urls and s["url"] not in _have]
 _url2id = {s["url"]: s["id"] for s in subset}
-col_payload = [{"id": c["id"], "emoji": c["emoji"], "name": c["name"],
+col_payload = [{"id": c["id"], "emoji": c["emoji"], "name": c["name"], "group": c.get("group", "goal"),
                 "ids": [_url2id[u] for u in c["urls"] if u in _url2id]} for c in collections]
 
 best_ids, seen = [], set()
@@ -83,13 +83,12 @@ CONTROLLER = """
 function showBest(){mode='best';setSec('인기 Best','GitHub 스타순 · 레포당 1개');hint.innerHTML='';
   let list=BEST.map(id=>BYID[id]).filter(Boolean);
   if(tier!=='all')list=list.filter(s=>s.tier===tier);
-  if(catEl.value)list=list.filter(s=>s.cat===catEl.value);
   paint(list)}
-function run(){const q=qEl.value.trim().toLowerCase(),c=catEl.value;
-  if(!q&&!c){showBest();return}
-  mode='search';setSec(q?'검색 결과':'카테고리','');
+function run(){const q=qEl.value.trim().toLowerCase();
+  if(!q){showBest();return}
+  mode='search';setSec('검색 결과','');
   const terms=q.split(/\\s+/).filter(Boolean);
-  let out=SK.filter(s=>{if(tier!=='all'&&s.tier!==tier)return false;if(c&&s.cat!==c)return false;
+  let out=SK.filter(s=>{if(tier!=='all'&&s.tier!==tier)return false;
     if(!terms.length)return true;const hay=(s.name+' '+s.desc+' '+s.cat+' '+s.au).toLowerCase();
     return terms.every(t=>hay.includes(t))});
   out.sort((a,b)=>(b.stars||0)-(a.stars||0));
@@ -97,7 +96,7 @@ function run(){const q=qEl.value.trim().toLowerCase(),c=catEl.value;
   paint(out.slice(0,300));
   if(out.length>300)grid.insertAdjacentHTML('beforeend','<div class="empty">상위 300개 표시 · 검색어를 좁혀보세요 (총 '+out.length.toLocaleString()+'건)</div>')}
 const COLBYID={};COLS.forEach(c=>COLBYID[c.id]=c);
-function openCol(id,btn){clearCols();if(btn)btn.classList.add('on');mode='best';qEl.value='';catEl.value='';
+function openCol(id,btn){clearCols();if(btn)btn.classList.add('on');mode='best';qEl.value='';
   const c=COLBYID[id];const list=(c?c.ids:[]).map(i=>BYID[i]).filter(Boolean);
   setSec('컬렉션','');secc.textContent=c?c.name:'';hint.innerHTML='<b>'+list.length+'</b>개';paint(list)}
 showBest();

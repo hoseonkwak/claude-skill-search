@@ -67,6 +67,8 @@ a{color:inherit;text-decoration:none}
 .col-chip:hover{border-color:var(--accent);color:var(--accent)}
 .col-chip.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 .col-chip .e{font-size:15px}
+.doms .col-chip{font-size:12.5px;padding:7px 12px;color:var(--ink2)}
+.doms .col-chip .e{font-size:13.5px}
 .copy{font-family:var(--sans);font-size:11.5px;font-weight:600;color:var(--accent);background:var(--accent-soft);
   border:0;border-radius:7px;padding:5px 11px;cursor:pointer;white-space:nowrap;transition:.12s}
 .copy:hover{background:var(--accent);color:var(--on-accent)}
@@ -162,11 +164,11 @@ TEMPLATE = """<!doctype html>
     <div class="stats">수록 <b>__N__</b> · 검증 <b>__NC__</b> · ★ <b>__NS__</b></div>
     <div class="chips" id="egs"></div>
     <div class="cols-wrap"><span class="cols-label">이런 걸 하고 싶다면</span><div class="cols" id="cols"></div></div>
+    <div class="cols-wrap"><span class="cols-label">분야별로 보기</span><div class="cols doms" id="doms"></div></div>
   </section>
 
   <div class="controls">
     <div class="seg" id="tier"><button data-t="all" class="on">전체</button><button data-t="curated">검증</button><button data-t="catalog">수집</button></div>
-    <select id="cat"><option value="">모든 분류</option>__CATOPTS__</select>
     <span class="count" id="hint"></span>
   </div>
 
@@ -180,7 +182,7 @@ TEMPLATE = """<!doctype html>
 __DATA_INIT__
 const grid=document.getElementById('grid'),msg=document.getElementById('msg'),qEl=document.getElementById('q'),
 hint=document.getElementById('hint'),sech=document.getElementById('sech'),secc=document.getElementById('secc'),
-egsEl=document.getElementById('egs'),catEl=document.getElementById('cat'),themeBtn=document.getElementById('themeToggle'),colsEl=document.getElementById('cols');
+egsEl=document.getElementById('egs'),themeBtn=document.getElementById('themeToggle'),colsEl=document.getElementById('cols'),domsEl=document.getElementById('doms');
 const EGS=__EGS__,COLS=__COLLECTIONS__;let tier='all',mode='best';
 
 /* theme toggle */
@@ -223,12 +225,11 @@ function card(s,i){
 }
 function paint(list){grid.innerHTML=list.map(card).join('');msg.style.display=list.length?'none':'';if(!list.length)msg.textContent='찾는 스킬이 없습니다. 다른 표현으로 시도해 보세요.'}
 EGS.forEach(t=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{clearCols();qEl.value=t;run()};egsEl.appendChild(b)});
-COLS.forEach(c=>{const b=document.createElement('button');b.className='col-chip';b.dataset.id=c.id;b.innerHTML='<span class="e">'+c.emoji+'</span>'+esc(c.name);b.onclick=()=>openCol(c.id,b);colsEl.appendChild(b)});
+COLS.forEach(c=>{const b=document.createElement('button');b.className='col-chip';b.dataset.id=c.id;b.innerHTML='<span class="e">'+c.emoji+'</span>'+esc(c.name);b.onclick=()=>openCol(c.id,b);(c.group==='field'?domsEl:colsEl).appendChild(b)});
 function clearCols(){document.querySelectorAll('.col-chip').forEach(x=>x.classList.remove('on'))}
 function installCmd(url){const m=(url||'').match(/github\\.com\\/([^/#?]+)\\/([^/#?]+)(?:\\/tree\\/([^/]+)\\/(.+))?/);if(!m)return'# 설치 정보 없음';const owner=m[1],repo=m[2].replace(/\\.git$/,''),branch=m[3],path=m[4];const name=(path?path.split('/').pop():repo).replace(/[^a-zA-Z0-9_.-]/g,'-');const src=path?owner+'/'+repo+'/'+path+(branch?'#'+branch:''):owner+'/'+repo;return'npx degit '+src+' ~/.claude/skills/'+name}
 grid.addEventListener('click',e=>{const b=e.target.closest('.copy');if(!b)return;e.preventDefault();navigator.clipboard.writeText(installCmd(b.dataset.url)).then(()=>{const t=b.textContent;b.textContent='복사됨 ✓';b.classList.add('done');setTimeout(()=>{b.textContent=t;b.classList.remove('done')},1400)}).catch(()=>{b.textContent='복사 실패'})});
 document.querySelectorAll('#tier button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tier button').forEach(x=>x.classList.remove('on'));b.classList.add('on');tier=b.dataset.t;clearCols();run()});
-catEl.addEventListener('change',()=>{clearCols();run()});
 let _d;qEl.addEventListener('input',()=>{clearCols();clearTimeout(_d);_d=setTimeout(run,__DEBOUNCE__)});
 __CONTROLLER__
 </script>
