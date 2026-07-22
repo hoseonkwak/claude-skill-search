@@ -56,21 +56,64 @@ def repo_of(url):
     return f"{m.group(1)}/{m.group(2)}" if m else url
 
 
+STAR_CAP = 40000      # 인기 정렬 시 상한(초대형이 항상 1위 독식 방지)
+MEGA_STAR = 55000     # 모노레포/초대형: 레포 스타가 스킬별 신호가 아님 → 자동채움 제외(앵커로만)
+# 수동 앵커: 모델이 저평가하는 유명 스킬을 카테고리 상단에 강제 포함 (이름/레포 키워드)
+ANCHORS = {
+    "f_dev": ["DietrichGebert/ponytail", "obra/superpowers"],
+    "f_test": ["test-driven-development"],
+}
+
+
+def find_anchor(kw):
+    """유명 앵커 스킬을 전체 데이터에서 찾음(의미순위 낮아도). 최고 스타 우선."""
+    kw = kw.lower()
+    cands = [s for s in core.SKILLS
+             if s["description"] and kw in (s["name"] + " " + (s.get("repo") or "")).lower()]
+    if not cands:
+        return None
+    b = max(cands, key=lambda s: (s.get("stars") or 0))
+    return {"url": b["url"], "desc": b["description"], "name": b["name"], "stars": b.get("stars")}
+
+
+def _pop(r):
+    return (min(r.get("stars") or 0, STAR_CAP), r["score"])
+
+
 out = []
 for group, items in (("goal", COLLECTIONS), ("field", DOMAINS)):
     for c in items:
-        res = core.search(c["query"], tier="all", k=90)
-        seen, urls = set(), []
-        for r in res:
-            if not r["desc"]:
-                continue
+        res = core.search(c["query"], tier="all", k=120)
+        top = res[0]["score"] if res else 0.0
+        urls, seen_repo, owner_ct = [], set(), {}
+
+        def take(r):
             rp = repo_of(r["url"])
-            if rp in seen:
-                continue
-            seen.add(rp)
+            own = rp.split("/")[0].lower()
+            if not r.get("desc") or rp in seen_repo or owner_ct.get(own, 0) >= 2:
+                return
+            seen_repo.add(rp)
+            owner_ct[own] = owner_ct.get(own, 0) + 1
             urls.append(r["url"])
-            if len(urls) >= 18:
-                break
+
+        for kw in ANCHORS.get(c["id"], []):                 # 앵커(전체 데이터에서) 먼저
+            a = find_anchor(kw)
+            if a:
+                take(a)
+
+        def fill(rank_max, score_frac):                     # 게이트 + 모노레포 제외 → 인기순
+            g = [r for i, r in enumerate(res)
+                 if r["desc"] and i < rank_max and r["score"] >= top * score_frac
+                 and (r.get("stars") or 0) <= MEGA_STAR]
+            g.sort(key=_pop, reverse=True)
+            for r in g:
+                if len(urls) >= 18:
+                    break
+                take(r)
+
+        fill(35, 0.80)
+        if len(urls) < 10:                                  # 빈약하면 완화 (예: DB)
+            fill(70, 0.62)
         out.append({"id": c["id"], "emoji": c["emoji"], "name": c["name"],
                     "query": c["query"], "urls": urls, "group": group})
         print(f"  [{group}] {c['emoji']} {c['name']}: {len(urls)}", flush=True)
