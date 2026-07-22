@@ -1,7 +1,7 @@
 {
-  "tool_name": "Artifact",
-  "tool_input_preview": "{\"file_path\":\"/mnt/e/kwak/dev/claude-skill-search/site/artifact.html\",\"favicon\":\"🔍\",\"title\":\"Skill Finder — Claude Skills 통합 검색\",\"description\":\"모던 애플풍(흰 배경·Claude 코랄·네이비 다크·테마 토글). 11,965개 스킬 집계, 인기순...",
-  "error": "deploy 400: content contains invalid or unpaired escape sequences (decoded to U+FFFD)",
-  "timestamp": "2026-07-22T07:31:12.899Z",
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd /mnt/e/kwak/dev/claude-skill-search\\npython3 -m py_compile scripts/ui.py scripts/serve.py scripts/build_site.py scripts/core.py && echo \\\"syntax OK\\\"\\npython3 scripts/build_site.py 2>&1...",
+  "error": "Exit code 2\nsyntax OK\nwrote /mnt/e/kwak/dev/claude-skill-search/site/artifact.html  (2,475,006 bytes)\nwrote /mnt/e/kwak/dev/claude-skill-search/docs/index.html  (GitHub Pages)\n=== artifact has collections + install button? ===\ncollections chips: True\ncollection data: True\ninstall copy btn: True\nsize 2.58 MB\n/bin/bash: eval: line 33: syntax error near unexpected token `('\n/bin/bash: eval: line 33: `for p in /proc/[0-9]*; do cmd=\\$(tr '\\0' ' ' < \"\\$p/cmdline\" 2>/dev/null) || continue; case \"\\$cmd\"...",
+  "timestamp": "2026-07-22T11:26:51.663Z",
   "retry_count": 1
 }

@@ -59,6 +59,18 @@ a{color:inherit;text-decoration:none}
 .chips{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:20px}
 .chips button{font-family:var(--sans);font-size:13px;color:var(--ink2);background:var(--panel-2);border:0;border-radius:980px;padding:7px 15px;cursor:pointer;transition:.13s}
 .chips button:hover{background:var(--accent-soft);color:var(--accent)}
+.cols-wrap{margin-top:26px}
+.cols-label{display:block;font-size:12px;color:var(--faint);margin-bottom:11px}
+.cols{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+.col-chip{display:inline-flex;align-items:center;gap:7px;font-family:var(--sans);font-size:13.5px;font-weight:500;
+  color:var(--ink);background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:9px 15px;cursor:pointer;transition:.13s}
+.col-chip:hover{border-color:var(--accent);color:var(--accent)}
+.col-chip.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.col-chip .e{font-size:15px}
+.copy{font-family:var(--sans);font-size:11.5px;font-weight:600;color:var(--accent);background:var(--accent-soft);
+  border:0;border-radius:7px;padding:5px 11px;cursor:pointer;white-space:nowrap;transition:.12s}
+.copy:hover{background:var(--accent);color:var(--on-accent)}
+.copy.done{background:var(--ok);color:#fff}
 
 /* controls */
 .controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:34px 0 0}
@@ -149,6 +161,7 @@ TEMPLATE = """<!doctype html>
     </div>
     <div class="stats">수록 <b>__N__</b> · 검증 <b>__NC__</b> · ★ <b>__NS__</b></div>
     <div class="chips" id="egs"></div>
+    <div class="cols-wrap"><span class="cols-label">이런 걸 하고 싶다면</span><div class="cols" id="cols"></div></div>
   </section>
 
   <div class="controls">
@@ -167,8 +180,8 @@ TEMPLATE = """<!doctype html>
 __DATA_INIT__
 const grid=document.getElementById('grid'),msg=document.getElementById('msg'),qEl=document.getElementById('q'),
 hint=document.getElementById('hint'),sech=document.getElementById('sech'),secc=document.getElementById('secc'),
-egsEl=document.getElementById('egs'),catEl=document.getElementById('cat'),themeBtn=document.getElementById('themeToggle');
-const EGS=__EGS__;let tier='all',mode='best';
+egsEl=document.getElementById('egs'),catEl=document.getElementById('cat'),themeBtn=document.getElementById('themeToggle'),colsEl=document.getElementById('cols');
+const EGS=__EGS__,COLS=__COLLECTIONS__;let tier='all',mode='best';
 
 /* theme toggle */
 const SUN='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.5 4.5l1.7 1.7M17.8 17.8l1.7 1.7M2 12h2.4M19.6 12H22M4.5 19.5l1.7-1.7M17.8 6.2l1.7-1.7"/></svg>';
@@ -202,17 +215,21 @@ function card(s,i){
   const frx=fr?`<span class="fresh s${fr.s}">${fr.t}</span>`:'';
   const fl=(s.flags&&s.flags.length&&s.risk!=='ok')?`<span class="rf${s.risk==='risk'?' hi':''}">⚠ ${s.flags.slice(0,3).map(f=>FLAG[f]||f).join(', ')}</span>`:'';
   const d=s.desc?`<p class="rdesc">${esc(s.desc)}</p>`:'<p class="rdesc none">설명 미보강</p>';
-  return `<a class="row" href="${esc(s.url)}" target="_blank" rel="noopener">
+  return `<div class="row">
   <span class="lead">${lead}</span>
-  <span class="body"><span class="rhead"><span class="rtitle">${esc(s.name)}</span>${tag}${arch}${rk}</span>${d}
-    <span class="rmeta"><span>${esc(s.cat)}</span>${au}${frx}${fl}<span>${esc(host(s.url))} ↗</span></span></span>
-  <span class="rfig">${star}<span class="chev">›</span></span></a>`;
+  <span class="body"><span class="rhead"><a class="rtitle" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>${tag}${arch}${rk}</span>${d}
+    <span class="rmeta"><span>${esc(s.cat)}</span>${au}${frx}${fl}<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(host(s.url))} ↗</a></span></span>
+  <span class="rfig">${star}<button class="copy" data-url="${esc(s.url)}" title="~/.claude/skills 에 설치">설치 복사</button></span></div>`;
 }
 function paint(list){grid.innerHTML=list.map(card).join('');msg.style.display=list.length?'none':'';if(!list.length)msg.textContent='찾는 스킬이 없습니다. 다른 표현으로 시도해 보세요.'}
-EGS.forEach(t=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{qEl.value=t;run()};egsEl.appendChild(b)});
-document.querySelectorAll('#tier button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tier button').forEach(x=>x.classList.remove('on'));b.classList.add('on');tier=b.dataset.t;run()});
-catEl.addEventListener('change',run);
-let _d;qEl.addEventListener('input',()=>{clearTimeout(_d);_d=setTimeout(run,__DEBOUNCE__)});
+EGS.forEach(t=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{clearCols();qEl.value=t;run()};egsEl.appendChild(b)});
+COLS.forEach(c=>{const b=document.createElement('button');b.className='col-chip';b.dataset.id=c.id;b.innerHTML='<span class="e">'+c.emoji+'</span>'+esc(c.name);b.onclick=()=>openCol(c.id,b);colsEl.appendChild(b)});
+function clearCols(){document.querySelectorAll('.col-chip').forEach(x=>x.classList.remove('on'))}
+function installCmd(url){const m=(url||'').match(/github\\.com\\/([^/#?]+)\\/([^/#?]+)(?:\\/tree\\/([^/]+)\\/(.+))?/);if(!m)return'# 설치 정보 없음';const owner=m[1],repo=m[2].replace(/\\.git$/,''),branch=m[3],path=m[4];const name=(path?path.split('/').pop():repo).replace(/[^a-zA-Z0-9_.-]/g,'-');const src=path?owner+'/'+repo+'/'+path+(branch?'#'+branch:''):owner+'/'+repo;return'npx degit '+src+' ~/.claude/skills/'+name}
+grid.addEventListener('click',e=>{const b=e.target.closest('.copy');if(!b)return;e.preventDefault();navigator.clipboard.writeText(installCmd(b.dataset.url)).then(()=>{const t=b.textContent;b.textContent='복사됨 ✓';b.classList.add('done');setTimeout(()=>{b.textContent=t;b.classList.remove('done')},1400)}).catch(()=>{b.textContent='복사 실패'})});
+document.querySelectorAll('#tier button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tier button').forEach(x=>x.classList.remove('on'));b.classList.add('on');tier=b.dataset.t;clearCols();run()});
+catEl.addEventListener('change',()=>{clearCols();run()});
+let _d;qEl.addEventListener('input',()=>{clearCols();clearTimeout(_d);_d=setTimeout(run,__DEBOUNCE__)});
 __CONTROLLER__
 </script>
 </body>
@@ -221,7 +238,7 @@ __CONTROLLER__
 
 
 def build_page(*, title, placeholder, n, nc, ns, cat_options, egs, footer,
-               data_init="", controller, debounce=200, note=""):
+               data_init="", controller, debounce=200, note="", collections=None):
     return (TEMPLATE
             .replace("__CSS__", CSS)
             .replace("__SPARK__", _SPARK)
@@ -229,6 +246,7 @@ def build_page(*, title, placeholder, n, nc, ns, cat_options, egs, footer,
             .replace("__PLACEHOLDER__", placeholder)
             .replace("__N__", f"{n:,}").replace("__NC__", str(nc)).replace("__NS__", str(ns))
             .replace("__CATOPTS__", cat_options)
+            .replace("__COLLECTIONS__", json.dumps(collections or [], ensure_ascii=False))
             .replace("__EGS__", json.dumps(egs, ensure_ascii=False))
             .replace("__FOOTER__", footer)
             .replace("__NOTE__", note)

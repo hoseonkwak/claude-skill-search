@@ -20,7 +20,11 @@ N_CUR = sum(1 for s in core.SKILLS if s["tier"] == "curated")
 N_STAR = sum(1 for s in core.SKILLS if s["stars"] is not None)
 CATS = sorted({s["category"] for s in core.SKILLS if s["tier"] == "curated"})
 CAT_OPTS = "".join(f'<option value="{escape(c, quote=True)}">{escape(c)}</option>' for c in CATS)
-print(f"ready: {N} skills, {N_CUR} curated, {N_STAR} starred, model={core.META['model']}", flush=True)
+_col_path = core.DATA / "collections.json"
+COLLECTIONS = json.loads(_col_path.read_text(encoding="utf-8"))["collections"] if _col_path.exists() else []
+COL_BY_ID = {c["id"]: c for c in COLLECTIONS}
+COL_META = [{"id": c["id"], "emoji": c["emoji"], "name": c["name"]} for c in COLLECTIONS]
+print(f"ready: {N} skills, {N_CUR} curated, {N_STAR} starred, {len(COLLECTIONS)} collections", flush=True)
 
 CONTROLLER = """
 async function loadBest(){mode='best';setSec('인기 Best','GitHub 스타순 · 레포당 1개');hint.innerHTML='';
@@ -33,6 +37,9 @@ async function run(){const q=qEl.value.trim();if(!q&&!catEl.value){loadBest();re
   try{const r=await fetch('/api/search?'+p);const j=await r.json();if(my!==_seq)return;
   const res=j.results||[];secc.textContent=q?('"'+j.query+'"'):'';hint.innerHTML='<b>'+res.length+'</b>건';paint(res)}
   catch(e){if(my===_seq){grid.innerHTML='';msg.style.display='';msg.textContent='검색 오류: '+e}}}
+async function openCol(id,btn){clearCols();if(btn)btn.classList.add('on');mode='best';qEl.value='';setSec('컬렉션','');
+  const r=await fetch('/api/collection?id='+encodeURIComponent(id));const j=await r.json();
+  secc.textContent=j.name||'';hint.innerHTML='<b>'+(j.results||[]).length+'</b>개';paint(j.results||[])}
 loadBest();
 """
 
@@ -45,7 +52,7 @@ PAGE = ui.build_page(
     footer="검색 = 하이브리드(다국어 임베딩 의미유사도 + BM25 어휘 + KO→EN 용어확장) · "
            "Best = 실제 GitHub 스타순(레포당 1개) · 신선도 = 최근 커밋 · "
            "안전 뱃지 = SKILL.md 휴리스틱 스캔(참고용, 오탐 가능).",
-    controller=CONTROLLER, debounce=200).encode("utf-8")
+    controller=CONTROLLER, debounce=200, collections=COL_META).encode("utf-8")
 
 
 class H(BaseHTTPRequestHandler):
@@ -73,6 +80,10 @@ class H(BaseHTTPRequestHandler):
         elif u.path == "/api/best":
             k = min(60, int(qs.get("k", ["30"])[0] or 30))
             self._json({"results": core.best(tier, k, cat)})
+        elif u.path == "/api/collection":
+            c = COL_BY_ID.get(qs.get("id", [""])[0])
+            self._json({"name": c["name"], "results": core.rows_for_urls(c["urls"])}
+                       if c else {"name": "", "results": []})
         elif u.path == "/api/search":
             q = (qs.get("q", [""])[0]).strip()
             k = min(60, int(qs.get("k", ["30"])[0] or 30))

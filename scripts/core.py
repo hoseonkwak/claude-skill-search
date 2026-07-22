@@ -57,6 +57,8 @@ for s in SKILLS:  # attach repo + star count + freshness
     s["risk"] = sf["level"] if sf else None
     s["flags"] = sf.get("flags", []) if sf else []
 
+BY_URL = {s["url"]: s for s in SKILLS}
+
 # ---------- lexical BM25 index ----------
 _TOKEN = re.compile(r"[a-z0-9]+|[가-힣]+")
 
@@ -141,6 +143,10 @@ def _row(s, score=None):
     if score is not None:
         r["score"] = round(score, 3)
     return r
+
+
+def rows_for_urls(urls):
+    return [_row(BY_URL[u]) for u in urls if u in BY_URL]
 
 
 def search(query, tier="all", k=25, alpha=0.78, cat=None):

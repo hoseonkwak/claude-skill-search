@@ -20,6 +20,8 @@ stars = json.loads((ROOT / "data" / "stars.json").read_text(encoding="utf-8")) \
     if (ROOT / "data" / "stars.json").exists() else {}
 safety = json.loads((ROOT / "data" / "safety.json").read_text(encoding="utf-8")) \
     if (ROOT / "data" / "safety.json").exists() else {}
+collections = json.loads((ROOT / "data" / "collections.json").read_text(encoding="utf-8"))["collections"] \
+    if (ROOT / "data" / "collections.json").exists() else []
 
 _REPO = re.compile(r"github\.com/([^/#?]+)/([^/#?]+)", re.I)
 def repo_of(url):
@@ -45,6 +47,13 @@ _cur = [s for s in skills if s["tier"] == "curated"]
 _cat = sorted((s for s in skills if s["tier"] == "catalog"),
               key=lambda s: (s["_stars"] or 0), reverse=True)
 subset = _cur + _cat[:max(0, CAP - len(_cur))]
+# make sure every collection's skills are embedded so they can render
+_col_urls = {u for c in collections for u in c["urls"]}
+_have = {s["url"] for s in subset}
+subset += [s for s in skills if s["url"] in _col_urls and s["url"] not in _have]
+_url2id = {s["url"]: s["id"] for s in subset}
+col_payload = [{"id": c["id"], "emoji": c["emoji"], "name": c["name"],
+                "ids": [_url2id[u] for u in c["urls"] if u in _url2id]} for c in collections]
 
 best_ids, seen = [], set()
 for s in sorted(subset, key=lambda s: ((s["_stars"] or 0), len(s["sources"])), reverse=True):
@@ -87,6 +96,10 @@ function run(){const q=qEl.value.trim().toLowerCase(),c=catEl.value;
   secc.textContent=q?('"'+q+'"'):'';hint.innerHTML='<b>'+out.length.toLocaleString()+'</b>건';
   paint(out.slice(0,300));
   if(out.length>300)grid.insertAdjacentHTML('beforeend','<div class="empty">상위 300개 표시 · 검색어를 좁혀보세요 (총 '+out.length.toLocaleString()+'건)</div>')}
+const COLBYID={};COLS.forEach(c=>COLBYID[c.id]=c);
+function openCol(id,btn){clearCols();if(btn)btn.classList.add('on');mode='best';qEl.value='';catEl.value='';
+  const c=COLBYID[id];const list=(c?c.ids:[]).map(i=>BYID[i]).filter(Boolean);
+  setSec('컬렉션','');secc.textContent=c?c.name:'';hint.innerHTML='<b>'+list.length+'</b>개';paint(list)}
 showBest();
 """
 
@@ -102,7 +115,7 @@ html = ui.build_page(
            "composio/mingrath/Chat2AnyLLM) + GitHub 확장 · Best = GitHub 스타순 · "
            "안전 뱃지 = SKILL.md 휴리스틱 스캔(참고용, 오탐 가능).",
     data_init="const D=" + payload + ";const SK=D.skills,BEST=D.best,BYID={};SK.forEach(s=>BYID[s.id]=s);",
-    controller=CONTROLLER, debounce=110, note=NOTE)
+    controller=CONTROLLER, debounce=110, note=NOTE, collections=col_payload)
 
 out = ROOT / "site" / "index.html"
 out.parent.mkdir(exist_ok=True)
