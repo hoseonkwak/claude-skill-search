@@ -112,3 +112,10 @@ print(f"wrote {out}  ({len(html):,} bytes)  |  {len(skills)} skills, {len(best_i
 frag = ui.fragment(html)
 (ROOT / "site" / "artifact.html").write_text(frag, encoding="utf-8")
 print(f"wrote {ROOT / 'site' / 'artifact.html'}  ({len(frag):,} bytes)")
+
+# GitHub Pages copy (served from main:/docs)
+docs = ROOT / "docs"
+docs.mkdir(exist_ok=True)
+(docs / "index.html").write_text(html, encoding="utf-8")
+(docs / ".nojekyll").write_text("", encoding="utf-8")
+print(f"wrote {docs / 'index.html'}  (GitHub Pages)")
