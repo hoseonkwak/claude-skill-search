@@ -7,6 +7,7 @@ Local web app (Phase 2 redesign): hybrid semantic+lexical search + popularity
     python scripts/serve.py 8080
 """
 import json
+import os
 import sys
 from html import escape
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
@@ -64,6 +65,8 @@ class H(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
+        self.send_header("Access-Control-Allow-Origin", "*")   # allow the static site to call
+        self.send_header("Cache-Control", "public, max-age=60")
         self.end_headers()
         self.wfile.write(body)
 
@@ -94,6 +97,6 @@ class H(BaseHTTPRequestHandler):
             self._send(404, b"not found", "text/plain")
 
 
-port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
+port = int(os.environ.get("PORT") or (sys.argv[1] if len(sys.argv) > 1 else 8000))
 print(f"serving on http://localhost:{port}  (Ctrl+C to stop)", flush=True)
 ThreadingHTTPServer(("127.0.0.1", port), H).serve_forever()

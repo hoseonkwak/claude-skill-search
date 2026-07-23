@@ -1,5 +1,6 @@
 # secrets — never commit
 .gh_token
+.hf_token
 *.token
 .env
 

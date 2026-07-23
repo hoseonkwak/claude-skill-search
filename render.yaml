@@ -1,0 +1,17 @@
+# Render Blueprint — lightweight semantic backend (model2vec, no torch → fits free 512MB)
+# serve.py serves both the app page and /api/* (semantic search).
+services:
+  - type: web
+    name: skill-finder
+    runtime: python
+    plan: free
+    # re-embed with the lightweight static model at build (keeps the repo's ST
+    # embeddings for local use; the deployed copy uses model2vec).
+    buildCommand: pip install --no-cache-dir numpy model2vec && python scripts/embed.py m2v
+    startCommand: python scripts/serve.py
+    autoDeploy: false
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: HF_HOME
+        value: /opt/render/project/.cache

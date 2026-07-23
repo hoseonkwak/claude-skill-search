@@ -11,7 +11,6 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 import numpy as np
-from model2vec import StaticModel
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -33,6 +32,7 @@ if BACKEND == "sentence-transformers":
         return np.asarray(_MODEL.encode(texts, convert_to_numpy=True,
                                         normalize_embeddings=False), dtype=np.float32)
 else:
+    from model2vec import StaticModel   # lazy: only needed for the m2v backend
     _MODEL = StaticModel.from_pretrained(META["model"])
 
     def _encode(texts):
