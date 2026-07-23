@@ -37,7 +37,9 @@ if MODE == "m2v":
     backend = "model2vec"
     print(f"loading {name} (model2vec) ...", flush=True)
     model = StaticModel.from_pretrained(name)
-    emb = np.asarray(model.encode(texts), dtype=np.float32)
+    parts = [np.asarray(model.encode(texts[i:i + 1000]), dtype=np.float32)
+             for i in range(0, len(texts), 1000)]        # batch: lower peak memory (free host)
+    emb = np.vstack(parts) if parts else np.zeros((0, 256), dtype=np.float32)
 else:
     from sentence_transformers import SentenceTransformer
     name = ST_MODEL
