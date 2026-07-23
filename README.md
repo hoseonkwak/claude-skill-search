@@ -12,8 +12,8 @@
 
 ## 바로 실행 (의미 검색 앱)
 
-```bash
-~/skillsearch-venv/bin/python scripts/serve.py     # http://localhost:8000
+```powershell
+.\.venv\Scripts\python scripts\serve.py     # http://localhost:8000
 ```
 
 한국어/영어로 하고 싶은 작업을 입력하면 뜻이 통하는 스킬을 유사도순으로 보여준다.
@@ -62,23 +62,27 @@ site/artifact.html  body-only fragment (claude.ai 아티팩트 배포용)
 
 ## 재현
 
-```bash
-# 0) 임베딩용 venv 부트스트랩 (이 환경엔 pip이 없어 get-pip 사용) — 최초 1회
-python3 -m venv --without-pip ~/skillsearch-venv
-curl -sSL https://bootstrap.pypa.io/get-pip.py | ~/skillsearch-venv/bin/python -
-~/skillsearch-venv/bin/pip install numpy model2vec
-VP=~/skillsearch-venv/bin/python
+```powershell
+# 0) venv 부트스트랩 (Windows 네이티브, Python 3.11) — 최초 1회
+py -3.11 -m venv .venv
+.\.venv\Scripts\python -m pip install -U pip
+.\.venv\Scripts\python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+.\.venv\Scripts\python -m pip install numpy sentence-transformers sentencepiece transformers huggingface_hub
+$VP = ".\.venv\Scripts\python.exe"
 
 # 1) 씨앗 소스는 data/raw/ 에 이미 포함 (marketplace.json + awesome-list README 5개)
 # 2) 정규화 데이터셋
-$VP scripts/ingest.py
+& $VP scripts\ingest.py
 # 3) 정적 키워드 사이트
-$VP scripts/build_site.py
+& $VP scripts\build_site.py
 # 4) 임베딩 계산 (다국어 모델 최초 1회 다운로드)
-$VP scripts/embed.py
+& $VP scripts\embed.py
 # 5) 의미 검색 앱 실행
-$VP scripts/serve.py      # http://localhost:8000
+& $VP scripts\serve.py      # http://localhost:8000
 ```
+
+> torch import 시 `[WinError 1114] ... c10.dll` 나오면 MSVC 런타임이 낡은 것:
+> `winget install --id Microsoft.VCRedist.2015+.x64` 후 재시도.
 
 ## 로드맵
 

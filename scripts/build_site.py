@@ -69,8 +69,7 @@ slim = [{
     "cat": s["category"], "tier": s["tier"], "au": s.get("author") or "",
     "v": bool(s.get("verified")), "src": s["sources"], "stars": s["_stars"],
     "pushed": s["_pushed"], "arch": s["_arch"], "risk": s["_risk"], "flags": s["_flags"],
-    "dko": s.get("desc_ko", ""),
-} for s in subset]
+} for s in subset]   # desc_ko는 싣지 않음 — 기계번역 표시 중단(아래 CLAUDE.md 결정)
 
 payload = json.dumps({"skills": slim, "best": best_ids},
                      ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")

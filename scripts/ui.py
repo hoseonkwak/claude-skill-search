@@ -87,11 +87,10 @@ a{color:inherit;text-decoration:none}
   border:0;border-radius:7px;padding:5px 11px;cursor:pointer;white-space:nowrap;transition:.12s}
 .copy:hover{background:var(--accent);color:var(--on-accent)}
 .copy.done{background:var(--ok);color:#fff}
-.origbtn{font-family:var(--mono);font-size:11px;color:var(--faint);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
-.origbtn:hover{color:var(--accent)}
 .howtobtn{font-family:var(--mono);font-size:11px;color:var(--accent);background:none;border:0;padding:0;cursor:pointer}
 .howtobtn:hover{text-decoration:underline}
 .howto{display:block;margin-top:10px;padding:13px 15px;background:var(--panel-2);border-radius:11px;font-size:12.5px;color:var(--ink2);line-height:1.5;max-width:62ch}
+.howto[hidden]{display:none}   /* display:block가 UA의 [hidden]{display:none}을 덮어써서 필요 */
 .howto .ht{display:flex;gap:9px;align-items:flex-start;margin-top:9px}
 .howto .ht:first-child{margin-top:0}
 .howto .ht i{flex:none;width:18px;height:18px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-size:11px;font-weight:700;font-style:normal;display:grid;place-items:center;margin-top:1px}
@@ -243,9 +242,7 @@ function card(s,i){
   const fr=fresh(s.pushed);
   const frx=fr?`<span class="fresh s${fr.s}">${fr.t}</span>`:'';
   const fl=(s.flags&&s.flags.length&&s.risk!=='ok')?`<span class="rf${s.risk==='risk'?' hi':''}">⚠ ${s.flags.slice(0,3).map(f=>FLAG[f]||f).join(', ')}</span>`:'';
-  const _ko=s.dko||'',_shown=_ko||s.desc,_hasOrig=_ko&&s.desc&&_ko!==s.desc;
-  const d=_shown?`<p class="rdesc" data-ko="${esc(_ko)}" data-orig="${esc(s.desc||'')}">${esc(_shown)}</p>`:'<p class="rdesc none">설명 준비 중</p>';
-  const orig=_hasOrig?'<button class="origbtn" type="button">원문</button>':'';
+  const d=s.desc?`<p class="rdesc">${esc(s.desc)}</p>`:'<p class="rdesc none">설명 준비 중</p>';
   const cmd=installCmd(s.url);
   const howto=`<span class="howto" hidden>`
     +`<span class="ht"><i>1</i><span><b>설치</b> — 터미널에서 실행<span class="ht-cmd"><code>${esc(cmd)}</code><button class="copy" data-url="${esc(s.url)}">복사</button></span></span></span>`
@@ -254,7 +251,7 @@ function card(s,i){
   return `<div class="row">
   <span class="lead">${lead}</span>
   <span class="body"><span class="rhead"><a class="rtitle" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>${tag}${arch}${rk}</span>${d}
-    <span class="rmeta"><span>${esc(s.cat)}</span>${au}${frx}${fl}<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(host(s.url))} ↗</a>${orig}<button class="howtobtn" type="button">사용법 ▾</button></span>${howto}</span>
+    <span class="rmeta"><span>${esc(s.cat)}</span>${au}${frx}${fl}<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(host(s.url))} ↗</a><button class="howtobtn" type="button">사용법 ▾</button></span>${howto}</span>
   <span class="rfig">${star}<button class="copy" data-url="${esc(s.url)}" title="~/.claude/skills 에 설치">설치 복사</button></span></div>`;
 }
 function paint(list){grid.innerHTML=list.map(card).join('');msg.style.display=list.length?'none':'';if(!list.length)msg.textContent='찾는 스킬이 없습니다. 다른 표현으로 시도해 보세요.'}
@@ -267,8 +264,6 @@ function installCmd(url){const m=(url||'').match(/github\\.com\\/([^/#?]+)\\/([^
 grid.addEventListener('click',e=>{
   const cp=e.target.closest('.copy');
   if(cp){e.preventDefault();navigator.clipboard.writeText(installCmd(cp.dataset.url)).then(()=>{const t=cp.textContent;cp.textContent='복사됨 ✓';cp.classList.add('done');setTimeout(()=>{cp.textContent=t;cp.classList.remove('done')},1400)}).catch(()=>{cp.textContent='복사 실패'});return}
-  const ob=e.target.closest('.origbtn');
-  if(ob){e.preventDefault();const p=ob.closest('.row').querySelector('.rdesc');if(!p)return;const ko=p.textContent===p.dataset.ko;p.textContent=ko?p.dataset.orig:p.dataset.ko;ob.textContent=ko?'번역':'원문';return}
   const hb=e.target.closest('.howtobtn');
   if(hb){e.preventDefault();const p=hb.closest('.body').querySelector('.howto');if(!p)return;if(p.hasAttribute('hidden')){p.removeAttribute('hidden');hb.textContent='사용법 ▴'}else{p.setAttribute('hidden','');hb.textContent='사용법 ▾'}}
 });

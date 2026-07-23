@@ -16,43 +16,46 @@
 ## 현재 상태 (2026-07-23)
 - 스킬 **11,965개** (6개 소스 집계·중복제거). 스타 있는 것 ~11.8k, 안전 스캔 9,691개.
 - 기능: 하이브리드 의미검색(로컬), 정적 키워드검색(공개), 인기 Best, **분야 카드 그리드 + 목적 컬렉션**,
-  카드별 **"사용법" 펼침**, 원클릭 **설치 복사**, 안전/신선도/검증/스타 **뱃지**, **한글 번역**(+원문 토글),
+  카드별 **"사용법" 펼침**, 원클릭 **설치 복사**, 안전/신선도/검증/스타 **뱃지**,
   라이트/네이비-다크 + 테마 토글, 로고→홈.
-- **한글 번역 진행 중**: `translate.py`가 백그라운드로 채우는 중 (~4.4k/11,965, CPU라 ~1개/초).
-  더 채우려면 재수집+재빌드(아래).
+- **설명은 원문(영어) 그대로 노출** — 기계번역 표시는 중단(아래 "핵심 결정" 참고).
+  `data/desc_ko.json`(8,634개)은 보관만 하고 화면·페이로드에 싣지 않음.
 - 남은 일: `TODO.md` 참고.
 
 ---
 
 ## ⚙️ 어떻게 실행하나 (제일 중요)
 
-**모든 파이썬 스크립트는 전용 venv로 실행**: `~/skillsearch-venv/bin/python`
-(이 환경엔 시스템 pip이 없어 get-pip로 부트스트랩함. venv엔 numpy, model2vec,
-sentence-transformers, torch(CPU), sentencepiece, huggingface_hub 설치됨.)
+**환경 = Windows 네이티브** (WSL 안 씀). 모든 파이썬 스크립트는 **프로젝트 venv**로 실행:
+`.venv\Scripts\python.exe` (Python 3.11 · numpy, sentence-transformers, torch(CPU),
+sentencepiece, transformers, huggingface_hub 설치됨). 재현은 `docs/ARCHITECTURE.md` §2.
 
-```bash
-cd /mnt/e/kwak/dev/claude-skill-search
-VP=~/skillsearch-venv/bin/python
+```powershell
+cd E:\kwak\dev\claude-skill-search
+$VP = ".\.venv\Scripts\python.exe"
 
 # 로컬 의미검색 앱 (한국어 자연어 검색 최상 품질)
-$VP scripts/serve.py            # → http://localhost:8000  (페이지 + /api/*)
+& $VP scripts\serve.py          # → http://localhost:8000  (페이지 + /api/*)
 
 # 데이터/UI 바꾼 뒤 공개 사이트 갱신하는 표준 순서:
-python3 scripts/ingest.py           # 원본→data/skills.json (번역·enrich 병합, 정리, 티어링)
-$VP    scripts/embed.py             # skills.json→embeddings.npy (ST 384d)  ※스킬 집합 바뀔 때만
-$VP    scripts/build_collections.py # 카테고리/컬렉션 재생성 (랭킹 바꿨을 때)
-python3 scripts/build_site.py       # site/index.html + site/artifact.html + docs/index.html(Pages)
+& $VP scripts\ingest.py             # 원본→data/skills.json (번역·enrich 병합, 정리, 티어링)
+& $VP scripts\embed.py              # skills.json→embeddings.npy (ST 384d)  ※스킬 집합 바뀔 때만
+& $VP scripts\build_collections.py  # 카테고리/컬렉션 재생성 (랭킹 바꿨을 때)
+& $VP scripts\build_site.py         # site/index.html + site/artifact.html + docs/index.html(Pages)
 # 그다음: git commit/push (Pages 자동배포) + Artifact 재게시(같은 파일경로)
 ```
 
-**로컬 serve.py 재기동** (셸 자기매칭 주의 — `pkill -f serve.py`는 셸까지 죽여 exit 143):
-```bash
-VP=~/skillsearch-venv/bin/python
-for p in /proc/[0-9]*; do c=$(tr '\0' ' ' </$p/cmdline 2>/dev/null)||continue; case "$c" in "$VP "*serve.py*) kill ${p#/proc/};; esac; done
-sleep 1; $VP scripts/serve.py 8000 >/tmp/skillsrv.log 2>&1 & disown
+**로컬 serve.py 재기동** (PowerShell — 명령줄로 프로세스 식별해 종료):
+```powershell
+Get-CimInstance Win32_Process -Filter "Name='python.exe'" |
+  Where-Object { $_.CommandLine -like '*serve.py*' } |
+  ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
+Start-Process -FilePath ".\.venv\Scripts\python.exe" -ArgumentList "scripts\serve.py","8000" -WindowStyle Hidden
 ```
+(Claude Code 안에서는 `run_in_background: true`로 띄우는 게 로그 보기 편함.)
 
-**GitHub push**: 자격 헬퍼가 없어 `.gh_token`(repo 권한)으로 인증:
+**GitHub push**: Windows 자격 관리자(`credential.helper=manager`)가 있어 보통 `git push`면 끝.
+안 되면 Bash 툴(**Git Bash** — WSL 아님)에서 `.gh_token`(repo 권한)으로:
 ```bash
 GIT_TERMINAL_PROMPT=0 git -c credential.helper='!f(){ echo username=hoseonkwak; echo "password=$(cat .gh_token)"; }; f' push
 ```
@@ -85,14 +88,25 @@ README.md TODO.md CLAUDE.md
 ```
 
 ## 🔑 환경 · 토큰
-- venv: `~/skillsearch-venv` (재현: `docs/ARCHITECTURE.md` 참고)
+- OS: **Windows 네이티브** (PowerShell / Git Bash). WSL은 더 이상 쓰지 않음.
+- venv: `.venv` (프로젝트 안, gitignore됨 · 재현: `docs/ARCHITECTURE.md` §2)
+- 모델 캐시: `%USERPROFILE%\.cache\huggingface`
 - `.gh_token` — GitHub **repo** 권한 토큰(push용). **gitignore됨.**
 - `.hf_token` — Hugging Face 토큰. **지금은 안 씀 → revoke 권장.** gitignore됨.
 - 토큰은 채팅에 붙여넣지 말고 `! echo '토큰' > .gh_token` 처럼 넣기.
 
 ## 🧭 핵심 결정 (왜)
 - **임베딩 = sentence-transformers MiniLM-L12 다국어(384d)** — 순수 한국어 질의 품질 때문(model2vec 정적보다 나음).
-  검색은 원문(영어) 임베딩, 번역은 표시용.
+  검색은 원문(영어) 임베딩 → **한국어 질의는 번역 없이도 그대로 통함**.
+- **기계번역 표시 중단 (2026-07-23)** — 배보다 배꼽. 근거:
+  1) **비용**: 정적 사이트가 전 데이터를 임베드하는 구조라 번역을 실으면 `docs/index.html` 3.45MB→5.2MB.
+     빼니 **2.53MB**(-27%).
+  2) **효용 0(검색)**: 검색은 원문 임베딩이라 번역은 순수 표시용. 한국어 검색 품질과 무관.
+  3) **품질**: m2m100_418M 결과가 기계번역체("실수가 실행에서 깊이 발생할 때 사용 하 고 원래의 발사기를…").
+     한글 미생성 82개. 신뢰 신호가 셀링포인트인 서비스에서 오히려 신뢰를 깎음.
+  4) **치명적 표시 버그**: `desc_ko`가 **URL 키**라 모노레포(스킬 여러 개가 URL 하나 공유)에서
+     228개 스킬(28 URL)이 남의 번역을 물려받음. 하필 obra/superpowers(★258k) 같은 최상위 노출 카드라 즉시 눈에 띔.
+  - 되살릴 거면: 키를 `id`로 바꾸고(위 4번), 노출되는 상위 구간만, 더 나은 모델(API급)로. `desc_ko.json`은 보관 중.
 - **공개 배포 보류 → 로컬 전용** — 다국어 임베딩 모델이 **~1.65GB RAM** 필요. 무료 호스트(512MB)·무료 HF Docker(이제 PRO)
   모두 불가. 유료(HF PRO $9/월 또는 2GB 인스턴스)면 `serve.py` 그대로 5분이면 올림.
 - **카테고리 랭킹** — 수동 앵커(유명 스킬 포함 보장) + **모노레포(스타>55k) 자동채움 제외**(anthropics/skills가 엉뚱한 카테고리 잠식 방지)
@@ -103,14 +117,13 @@ README.md TODO.md CLAUDE.md
 ## ⚠️ 주의 (gotchas)
 - **`embed.py m2v`를 로컬에서 돌리지 말 것** — embeddings.npy를 model2vec(256d)로 덮어써 로컬 ST 품질이 깨짐.
   m2v는 폐기된 배포 실험용이었음. 로컬은 항상 `embed.py`(=st).
-- **desc_ko는 표시용** — 번역이 바뀌어도 재임베딩 불필요. `ingest.py` 재실행으로 skills.json에 반영 → `build_site.py`로 노출.
-- **translate.py는 원자적 저장** — 백그라운드로 desc_ko.json 갱신 중 재수집해도 안전.
+- **`translate.py`는 이제 파이프라인에서 빠짐** — 돌려도 화면에 안 나옴(표시 경로 제거됨: `ui.py`·`build_site.py`·`core.py`).
+  `ingest.py`는 여전히 `desc_ko`를 skills.json에 병합하지만 소비처가 없음.
 - **스킬 집합이 안 바뀌면 embed 재실행 불필요** (임베딩 순서=skills.json 순서, ids 일치).
 - Pages는 `main:/docs`. `build_site.py`가 docs/index.html+.nojekyll을 씀 (docs/의 다른 .md는 안 건드림).
 
 ## ▶️ 다음에 할 만한 것 (상세는 TODO.md)
-- 번역 완주 후 재빌드(공개 사이트 한글 더 채움).
-- 카드 "사용법" **진한 버전**: SKILL.md에서 실제 사용예시 발췌(재수집+번역).
+- 카드 "사용법" **진한 버전**: SKILL.md에서 실제 사용예시 발췌(재수집).
 - Option B 안전 스캔을 curated/chat2anyllm 카탈로그로 확장, 오탐↓.
 - (원하면) 유료로 의미검색 백엔드 공개 배포.
 - Housekeeping: HF 토큰 revoke, 실패한 Render 서비스 삭제.

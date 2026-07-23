@@ -141,7 +141,7 @@ def _row(s, score=None):
          "tier": s["tier"], "au": s.get("author") or "", "v": bool(s.get("verified")),
          "src": s["sources"], "stars": s["stars"],
          "pushed": s.get("pushed"), "arch": s.get("archived", False),
-         "risk": s.get("risk"), "flags": s.get("flags", []), "dko": s.get("desc_ko", "")}
+         "risk": s.get("risk"), "flags": s.get("flags", [])}
     if score is not None:
         r["score"] = round(score, 3)
     return r
