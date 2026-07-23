@@ -69,6 +69,7 @@ slim = [{
     "cat": s["category"], "tier": s["tier"], "au": s.get("author") or "",
     "v": bool(s.get("verified")), "src": s["sources"], "stars": s["_stars"],
     "pushed": s["_pushed"], "arch": s["_arch"], "risk": s["_risk"], "flags": s["_flags"],
+    "dko": s.get("desc_ko", ""),
 } for s in subset]
 
 payload = json.dumps({"skills": slim, "best": best_ids},

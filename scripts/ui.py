@@ -87,6 +87,8 @@ a{color:inherit;text-decoration:none}
   border:0;border-radius:7px;padding:5px 11px;cursor:pointer;white-space:nowrap;transition:.12s}
 .copy:hover{background:var(--accent);color:var(--on-accent)}
 .copy.done{background:var(--ok);color:#fff}
+.origbtn{font-family:var(--mono);font-size:11px;color:var(--faint);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.origbtn:hover{color:var(--accent)}
 
 /* controls */
 .controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:34px 0 0}
@@ -232,11 +234,13 @@ function card(s,i){
   const fr=fresh(s.pushed);
   const frx=fr?`<span class="fresh s${fr.s}">${fr.t}</span>`:'';
   const fl=(s.flags&&s.flags.length&&s.risk!=='ok')?`<span class="rf${s.risk==='risk'?' hi':''}">⚠ ${s.flags.slice(0,3).map(f=>FLAG[f]||f).join(', ')}</span>`:'';
-  const d=s.desc?`<p class="rdesc">${esc(s.desc)}</p>`:'<p class="rdesc none">설명 준비 중</p>';
+  const _ko=s.dko||'',_shown=_ko||s.desc,_hasOrig=_ko&&s.desc&&_ko!==s.desc;
+  const d=_shown?`<p class="rdesc" data-ko="${esc(_ko)}" data-orig="${esc(s.desc||'')}">${esc(_shown)}</p>`:'<p class="rdesc none">설명 준비 중</p>';
+  const orig=_hasOrig?'<button class="origbtn" type="button">원문</button>':'';
   return `<div class="row">
   <span class="lead">${lead}</span>
   <span class="body"><span class="rhead"><a class="rtitle" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>${tag}${arch}${rk}</span>${d}
-    <span class="rmeta"><span>${esc(s.cat)}</span>${au}${frx}${fl}<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(host(s.url))} ↗</a></span></span>
+    <span class="rmeta"><span>${esc(s.cat)}</span>${au}${frx}${fl}<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(host(s.url))} ↗</a>${orig}</span></span>
   <span class="rfig">${star}<button class="copy" data-url="${esc(s.url)}" title="~/.claude/skills 에 설치">설치 복사</button></span></div>`;
 }
 function paint(list){grid.innerHTML=list.map(card).join('');msg.style.display=list.length?'none':'';if(!list.length)msg.textContent='찾는 스킬이 없습니다. 다른 표현으로 시도해 보세요.'}
@@ -246,7 +250,12 @@ COLS.filter(c=>c.group==='field').forEach(c=>domsEl.appendChild(_chip(c)));
 COLS.filter(c=>c.group!=='field').forEach(c=>colsEl.appendChild(_chip(c)));
 function clearCols(){document.querySelectorAll('.col-chip').forEach(x=>x.classList.remove('on'))}
 function installCmd(url){const m=(url||'').match(/github\\.com\\/([^/#?]+)\\/([^/#?]+)(?:\\/tree\\/([^/]+)\\/(.+))?/);if(!m)return'# 설치 정보 없음';const owner=m[1],repo=m[2].replace(/\\.git$/,''),branch=m[3],path=m[4];const name=(path?path.split('/').pop():repo).replace(/[^a-zA-Z0-9_.-]/g,'-');const src=path?owner+'/'+repo+'/'+path+(branch?'#'+branch:''):owner+'/'+repo;return'npx degit '+src+' ~/.claude/skills/'+name}
-grid.addEventListener('click',e=>{const b=e.target.closest('.copy');if(!b)return;e.preventDefault();navigator.clipboard.writeText(installCmd(b.dataset.url)).then(()=>{const t=b.textContent;b.textContent='복사됨 ✓';b.classList.add('done');setTimeout(()=>{b.textContent=t;b.classList.remove('done')},1400)}).catch(()=>{b.textContent='복사 실패'})});
+grid.addEventListener('click',e=>{
+  const cp=e.target.closest('.copy');
+  if(cp){e.preventDefault();navigator.clipboard.writeText(installCmd(cp.dataset.url)).then(()=>{const t=cp.textContent;cp.textContent='복사됨 ✓';cp.classList.add('done');setTimeout(()=>{cp.textContent=t;cp.classList.remove('done')},1400)}).catch(()=>{cp.textContent='복사 실패'});return}
+  const ob=e.target.closest('.origbtn');
+  if(ob){e.preventDefault();const p=ob.closest('.row').querySelector('.rdesc');if(!p)return;const ko=p.textContent===p.dataset.ko;p.textContent=ko?p.dataset.orig:p.dataset.ko;ob.textContent=ko?'번역':'원문'}
+});
 document.querySelectorAll('#tier button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tier button').forEach(x=>x.classList.remove('on'));b.classList.add('on');tier=b.dataset.t;clearCols();run()});
 const _brand=document.querySelector('.brand');if(_brand)_brand.onclick=()=>{qEl.value='';document.querySelectorAll('#tier button').forEach((x,i)=>x.classList.toggle('on',i===0));tier='all';clearCols();run()};
 let _d;qEl.addEventListener('input',()=>{clearCols();clearTimeout(_d);_d=setTimeout(run,__DEBOUNCE__)});

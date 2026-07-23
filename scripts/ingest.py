@@ -220,6 +220,8 @@ skills = sorted(merged.values(),
 # apply SKILL.md descriptions harvested by enrich_skillmd.py (if present)
 enrich = json.loads((OUT / "enrich.json").read_text(encoding="utf-8")) \
     if (OUT / "enrich.json").exists() else {}
+dko = json.loads((OUT / "desc_ko.json").read_text(encoding="utf-8")) \
+    if (OUT / "desc_ko.json").exists() else {}          # 한글 번역본(display용)
 n_enriched = 0
 for s in skills:
     s.pop("source_list", None)
@@ -235,6 +237,7 @@ for s in skills:
     if c and c.islower():
         s["category"] = c[0].upper() + c[1:]
     s["needs_enrichment"] = not bool(s["description"])
+    s["desc_ko"] = dko.get(s["url"], "")                # 한글 번역(없으면 원문 표시)
 
 for i, s in enumerate(skills, 1):              # stable id
     s["id"] = i
