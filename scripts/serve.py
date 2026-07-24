@@ -24,6 +24,8 @@ CAT_OPTS = "".join(f'<option value="{escape(c, quote=True)}">{escape(c)}</option
 _col_path = core.DATA / "collections.json"
 COLLECTIONS = json.loads(_col_path.read_text(encoding="utf-8"))["collections"] if _col_path.exists() else []
 COL_BY_ID = {c["id"]: c for c in COLLECTIONS}
+_demo_path = core.DATA / "category_demos.json"
+DEMOS = json.loads(_demo_path.read_text(encoding="utf-8")) if _demo_path.exists() else {}
 COL_META = [{"id": c["id"], "emoji": c["emoji"], "name": c["name"], "group": c.get("group", "goal")}
             for c in COLLECTIONS]
 print(f"ready: {N} skills, {N_CUR} curated, {N_STAR} starred, {len(COLLECTIONS)} collections", flush=True)
@@ -41,7 +43,7 @@ async function run(){const q=qEl.value.trim();if(!q){loadBest();return}
   catch(e){if(my===_seq){grid.innerHTML='';msg.style.display='';msg.textContent='검색 오류: '+e}}}
 async function openCol(id,btn){clearCols();if(btn)btn.classList.add('on');mode='best';qEl.value='';setSec('컬렉션','');
   const r=await fetch('/api/collection?id='+encodeURIComponent(id));const j=await r.json();
-  secc.textContent=j.name||'';hint.innerHTML='<b>'+(j.results||[]).length+'</b>개';paint(j.results||[])}
+  secc.textContent=j.name||'';hint.innerHTML='<b>'+(j.results||[]).length+'</b>개';paint(j.results||[]);renderDemo(id)}
 loadBest();
 """
 
@@ -54,7 +56,7 @@ PAGE = ui.build_page(
     footer="검색 = 하이브리드(다국어 임베딩 의미유사도 + BM25 어휘 + KO→EN 용어확장) · "
            "Best = 실제 GitHub 스타순(레포당 1개) · 신선도 = 최근 커밋 · "
            "안전 뱃지 = SKILL.md 휴리스틱 스캔(참고용, 오탐 가능).",
-    controller=CONTROLLER, debounce=200, collections=COL_META).encode("utf-8")
+    controller=CONTROLLER, debounce=200, collections=COL_META, demos=DEMOS).encode("utf-8")
 
 
 class H(BaseHTTPRequestHandler):

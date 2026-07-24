@@ -98,6 +98,25 @@ a{color:inherit;text-decoration:none}
 .ht-cmd{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
 .ht-cmd code{font-family:var(--mono);font-size:11.5px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:4px 8px;color:var(--ink);word-break:break-all}
 
+/* category before/after demo panel */
+.demo{display:none;margin:0 0 18px}
+.demo.on{display:block}
+.demo-h{font-size:13px;font-weight:700;color:var(--ink2);margin:0 0 10px;letter-spacing:-.01em}
+.ba{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:12px}
+.ba-card{border-radius:14px;padding:15px 16px;border:1px solid var(--line2);display:flex;flex-direction:column;gap:8px}
+.ba-card.before{background:var(--panel-2)}
+.ba-card.after{background:var(--accent-soft);border-color:var(--accent)}
+.ba-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.05em}
+.ba-card.before .ba-tag{color:var(--faint)}
+.ba-card.after .ba-tag{color:var(--accent)}
+.ba-ic{font-size:26px;line-height:1}
+.ba-card.before .ba-ic{opacity:.5;filter:grayscale(.35)}
+.ba-card p{margin:0;font-size:13.5px;line-height:1.5}
+.ba-card.before p{color:var(--ink2)}
+.ba-card.after p{color:var(--ink)}
+.ba-arrow{align-self:center;font-size:22px;font-weight:700;color:var(--accent)}
+@media(max-width:640px){.ba{grid-template-columns:1fr}.ba-arrow{transform:rotate(90deg)}}
+
 /* controls */
 .controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:34px 0 0}
 .seg{display:inline-flex;background:var(--panel-2);border-radius:11px;padding:3px}
@@ -198,6 +217,7 @@ TEMPLATE = """<!doctype html>
   </div>
 
   <div class="sec"><h2 id="sech">인기 스킬</h2><span class="sc" id="secc"></span></div>
+  <div class="demo" id="demo"></div>
   <div class="legend"><span class="lg ok">검증됨</span> 공식·큐레이션 · <span class="lg">수집</span> 자동수집 · ★ 인기(스타) · 🕒 최근 업데이트 · SKILL.md 스캔 <span class="lg ok">안전</span> <span class="lg warn">주의</span> <span class="lg risk">위험</span></div>
   <div class="list" id="grid"></div>
   <p class="empty" id="msg" style="display:none"></p>
@@ -209,7 +229,14 @@ __DATA_INIT__
 const grid=document.getElementById('grid'),msg=document.getElementById('msg'),qEl=document.getElementById('q'),
 hint=document.getElementById('hint'),sech=document.getElementById('sech'),secc=document.getElementById('secc'),
 egsEl=document.getElementById('egs'),themeBtn=document.getElementById('themeToggle'),colsEl=document.getElementById('cols'),domsEl=document.getElementById('doms');
-const EGS=__EGS__,COLS=__COLLECTIONS__;let tier='all',mode='best';
+const EGS=__EGS__,COLS=__COLLECTIONS__,DEMOS=__DEMOS__;let tier='all',mode='best';
+const demoEl=document.getElementById('demo');
+function renderDemo(id){if(!demoEl)return;const m=DEMOS[id];if(!m){demoEl.className='demo';demoEl.innerHTML='';return}
+  demoEl.innerHTML='<p class="demo-h">이 스킬들을 쓰면 이렇게 바뀌어요</p><div class="ba">'
+    +'<div class="ba-card before"><span class="ba-tag">BEFORE</span><span class="ba-ic">'+m.bi+'</span><p>'+esc(m.before)+'</p></div>'
+    +'<div class="ba-arrow">→</div>'
+    +'<div class="ba-card after"><span class="ba-tag">AFTER</span><span class="ba-ic">'+m.ai+'</span><p>'+esc(m.after)+'</p></div></div>';
+  demoEl.className='demo on'}
 
 /* theme toggle */
 const SUN='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.5 4.5l1.7 1.7M17.8 17.8l1.7 1.7M2 12h2.4M19.6 12H22M4.5 19.5l1.7-1.7M17.8 6.2l1.7-1.7"/></svg>';
@@ -225,7 +252,7 @@ function fstar(n){return n==null?'':(n>=1000?(n/1000).toFixed(n>=10000?0:1)+'k':
 function fresh(p){if(!p)return null;const t=Date.parse(p);if(!t)return null;const dys=(Date.now()-t)/864e5;
   if(dys<31)return{t:'최근 업데이트',s:0};const m=Math.floor(dys/30.4);
   if(m<12)return{t:m+'개월 전',s:m>=8?1:0};return{t:Math.floor(dys/365)+'년+ 전',s:2}}
-function setSec(a,b){sech.textContent=a;secc.textContent=b||''}
+function setSec(a,b){sech.textContent=a;secc.textContent=b||'';if(demoEl){demoEl.className='demo';demoEl.innerHTML=''}}
 const FLAG={'pipe-to-shell':'쉘 파이프 실행','base64-exec':'base64 실행','rm-rf-root':'파일 대량삭제',
 'prompt-injection':'프롬프트 인젝션','secret-exfil':'시크릿·네트워크','curl-eval':'원격 eval',
 'shell-exec':'쉘 실행','sudo':'sudo 사용','chmod-777':'chmod 777','network-call':'네트워크 호출','reads-secrets':'시크릿 접근'};
@@ -278,7 +305,7 @@ __CONTROLLER__
 
 
 def build_page(*, title, placeholder, n, nc, ns, cat_options, egs, footer,
-               data_init="", controller, debounce=200, note="", collections=None):
+               data_init="", controller, debounce=200, note="", collections=None, demos=None):
     return (TEMPLATE
             .replace("__CSS__", CSS)
             .replace("__SPARK__", _SPARK)
@@ -287,6 +314,7 @@ def build_page(*, title, placeholder, n, nc, ns, cat_options, egs, footer,
             .replace("__N__", f"{n:,}").replace("__NC__", str(nc)).replace("__NS__", str(ns))
             .replace("__CATOPTS__", cat_options)
             .replace("__COLLECTIONS__", json.dumps(collections or [], ensure_ascii=False))
+            .replace("__DEMOS__", json.dumps(demos or {}, ensure_ascii=False))
             .replace("__EGS__", json.dumps(egs, ensure_ascii=False))
             .replace("__FOOTER__", footer)
             .replace("__NOTE__", note)

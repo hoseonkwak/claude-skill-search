@@ -22,6 +22,8 @@ safety = json.loads((ROOT / "data" / "safety.json").read_text(encoding="utf-8"))
     if (ROOT / "data" / "safety.json").exists() else {}
 collections = json.loads((ROOT / "data" / "collections.json").read_text(encoding="utf-8"))["collections"] \
     if (ROOT / "data" / "collections.json").exists() else []
+demos = json.loads((ROOT / "data" / "category_demos.json").read_text(encoding="utf-8")) \
+    if (ROOT / "data" / "category_demos.json").exists() else {}
 
 _REPO = re.compile(r"github\.com/([^/#?]+)/([^/#?]+)", re.I)
 def repo_of(url):
@@ -98,7 +100,7 @@ function run(){const q=qEl.value.trim().toLowerCase();
 const COLBYID={};COLS.forEach(c=>COLBYID[c.id]=c);
 function openCol(id,btn){clearCols();if(btn)btn.classList.add('on');mode='best';qEl.value='';
   const c=COLBYID[id];const list=(c?c.ids:[]).map(i=>BYID[i]).filter(Boolean);
-  setSec('컬렉션','');secc.textContent=c?c.name:'';hint.innerHTML='<b>'+list.length+'</b>개';paint(list)}
+  setSec('컬렉션','');secc.textContent=c?c.name:'';hint.innerHTML='<b>'+list.length+'</b>개';paint(list);renderDemo(id)}
 showBest();
 """
 
@@ -114,7 +116,7 @@ html = ui.build_page(
            "composio/mingrath/Chat2AnyLLM) + GitHub 확장 · Best = GitHub 스타순 · "
            "안전 뱃지 = SKILL.md 휴리스틱 스캔(참고용, 오탐 가능).",
     data_init="const D=" + payload + ";const SK=D.skills,BEST=D.best,BYID={};SK.forEach(s=>BYID[s.id]=s);",
-    controller=CONTROLLER, debounce=110, note=NOTE, collections=col_payload)
+    controller=CONTROLLER, debounce=110, note=NOTE, collections=col_payload, demos=demos)
 
 out = ROOT / "site" / "index.html"
 out.parent.mkdir(exist_ok=True)

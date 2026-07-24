@@ -16,8 +16,8 @@
 ## 현재 상태 (2026-07-23)
 - 스킬 **11,965개** (6개 소스 집계·중복제거). 스타 있는 것 ~11.8k, 안전 스캔 9,691개.
 - 기능: 하이브리드 의미검색(로컬), 정적 키워드검색(공개), 인기 Best, **분야 카드 그리드 + 목적 컬렉션**,
-  카드별 **"사용법" 펼침**, 원클릭 **설치 복사**, 안전/신선도/검증/스타 **뱃지**,
-  라이트/네이비-다크 + 테마 토글, 로고→홈.
+  카테고리 클릭 시 **비포/애프터 패널**("이걸 쓰면 이렇게 바뀌어요"), 카드별 **"사용법" 펼침**,
+  원클릭 **설치 복사**, 안전/신선도/검증/스타 **뱃지**, 라이트/네이비-다크 + 테마 토글, 로고→홈.
 - **설명은 원문(영어) 그대로 노출** — 기계번역 표시는 중단(아래 "핵심 결정" 참고).
   `data/desc_ko.json`(8,634개)은 보관만 하고 화면·페이로드에 싣지 않음.
 - 남은 일: `TODO.md` 참고.
@@ -82,6 +82,7 @@ data/
   embeddings.npy       ST 임베딩 (11965×384)  ※embed.py로 재생성
   embed_meta.json      backend/dim/count/ids
   stars.json safety.json enrich.json expanded.json collections.json desc_ko.json
+  category_demos.json  카테고리(컬렉션 id)별 비포/애프터 문구 {bi,before,ai,after} — 손으로 큐레이션, UI 전용
 site/                  standalone(index.html) + artifact fragment
 docs/                  GitHub Pages 소스(index.html+.nojekyll) + 설계문서(*.md)
 README.md TODO.md CLAUDE.md
