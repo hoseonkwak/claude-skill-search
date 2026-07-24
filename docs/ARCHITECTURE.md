@@ -64,9 +64,14 @@ author,verified,sources[],needs_enrichment,(branch,path,n_skills for catalog)`
 `stars.json`: `{ "owner/repo": {stars,pushed,archived} }`
 `safety.json`: `{ url: {level, flags[]} }`
 `collections.json.collections[]`: `{id,emoji,name,query,group(goal|field),urls[]}`
-`category_demos.json`: `{ collectionId: {bi,before,ai,after} }` — 카테고리 클릭 시 뜨는 비포/애프터 패널.
-  손으로 큐레이션(22개=분야12+목적10), 스킬 데이터와 독립(=ingest/embed 무관). `ui.renderDemo`가 소비,
-  `serve.py`/`build_site.py`가 `demos=`로 주입. 화살표 좌=BEFORE(뮤트) 우=AFTER(코랄). 검색/Best로 가면 `setSec`가 숨김.
+`category_demos.json`: `{ collectionId: {bc,b,ac,a} }` — 카테고리 클릭 시 뜨는 비포/애프터 패널.
+  `bc/ac`=좌우 캡션, `b/a`=코드/텍스트 조각(실제 입력→출력 예시). 손으로 큐레이션(22=분야12+목적10),
+  스킬 데이터와 독립(=ingest/embed 무관). `ui.renderDemo`가 소비, `serve.py`/`build_site.py`가 `demos=`로 주입.
+  좌=BEFORE(뮤트 mono) 우=AFTER(코랄). 검색/Best로 가면 `setSec`가 숨김.
+`data/demos/<id>.svg`: 비주얼 카테고리(landing·cardnews·deck·f_front·office) **결과 목업 SVG**(손으로 그림, 온브랜드).
+  `serve.py`/`build_site.py`가 로드해 payload에 `svg` 필드로 **인라인**(=자체완결). 있으면 AFTER 카드가 스니펫 대신
+  이 SVG를 렌더(`renderDemo`). `ui.build_page`가 `__DEMOS__`의 `<`를 유니코드 이스케이프로 치환(SVG의 `</svg>`가
+  `</script>`처럼 스크립트를 조기 종료시키는 것 방지).
 `desc_ko.json`: `{ url: "한글설명" }` — **키가 url이라 모노레포에서 충돌**(§5). 보관용, 미사용.
 
 ## 7. 재배포 체크리스트

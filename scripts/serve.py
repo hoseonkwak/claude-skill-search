@@ -26,6 +26,10 @@ COLLECTIONS = json.loads(_col_path.read_text(encoding="utf-8"))["collections"] i
 COL_BY_ID = {c["id"]: c for c in COLLECTIONS}
 _demo_path = core.DATA / "category_demos.json"
 DEMOS = json.loads(_demo_path.read_text(encoding="utf-8")) if _demo_path.exists() else {}
+for _id, _d in DEMOS.items():                      # inline per-category SVG result mockups (if any)
+    _svg = core.DATA / "demos" / f"{_id}.svg"
+    if _svg.exists():
+        _d["svg"] = _svg.read_text(encoding="utf-8")
 COL_META = [{"id": c["id"], "emoji": c["emoji"], "name": c["name"], "group": c.get("group", "goal")}
             for c in COLLECTIONS]
 print(f"ready: {N} skills, {N_CUR} curated, {N_STAR} starred, {len(COLLECTIONS)} collections", flush=True)

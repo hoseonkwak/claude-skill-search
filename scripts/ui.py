@@ -102,7 +102,7 @@ a{color:inherit;text-decoration:none}
 .demo{display:none;margin:0 0 18px}
 .demo.on{display:block}
 .demo-h{font-size:13px;font-weight:700;color:var(--ink2);margin:0 0 10px;letter-spacing:-.01em}
-.ba{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:12px}
+.ba{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:12px}
 .ba-card{border-radius:14px;padding:13px 15px;border:1px solid var(--line2);display:flex;flex-direction:column;gap:9px}
 .ba-card.before{background:var(--panel-2)}
 .ba-card.after{background:var(--accent-soft);border-color:var(--accent)}
@@ -112,6 +112,8 @@ a{color:inherit;text-decoration:none}
 .ba-tag em{font-style:normal;font-weight:500;font-family:var(--sans);font-size:12px;letter-spacing:0;color:var(--ink2);margin-left:7px}
 .ba-code{margin:0;font-family:var(--mono);font-size:12px;line-height:1.55;white-space:pre-wrap;word-break:break-word;color:var(--ink)}
 .ba-card.before .ba-code{color:var(--ink2)}
+.ba-svg{margin-top:1px}
+.ba-svg svg{display:block;width:100%;height:auto;border-radius:9px}
 .ba-arrow{align-self:center;font-size:22px;font-weight:700;color:var(--accent)}
 @media(max-width:640px){.ba{grid-template-columns:1fr}.ba-arrow{transform:rotate(90deg)}}
 
@@ -230,10 +232,11 @@ egsEl=document.getElementById('egs'),themeBtn=document.getElementById('themeTogg
 const EGS=__EGS__,COLS=__COLLECTIONS__,DEMOS=__DEMOS__;let tier='all',mode='best';
 const demoEl=document.getElementById('demo');
 function renderDemo(id){if(!demoEl)return;const m=DEMOS[id];if(!m){demoEl.className='demo';demoEl.innerHTML='';return}
+  const aBody=m.svg?('<div class="ba-svg">'+m.svg+'</div>'):('<pre class="ba-code">'+esc(m.a)+'</pre>');
   demoEl.innerHTML='<p class="demo-h">이렇게 쓰면 이런 결과가 나와요</p><div class="ba">'
     +'<div class="ba-card before"><span class="ba-tag">BEFORE<em>'+esc(m.bc)+'</em></span><pre class="ba-code">'+esc(m.b)+'</pre></div>'
     +'<div class="ba-arrow">→</div>'
-    +'<div class="ba-card after"><span class="ba-tag">AFTER<em>'+esc(m.ac)+'</em></span><pre class="ba-code">'+esc(m.a)+'</pre></div></div>';
+    +'<div class="ba-card after"><span class="ba-tag">AFTER<em>'+esc(m.ac)+'</em></span>'+aBody+'</div></div>';
   demoEl.className='demo on'}
 
 /* theme toggle */
@@ -312,7 +315,7 @@ def build_page(*, title, placeholder, n, nc, ns, cat_options, egs, footer,
             .replace("__N__", f"{n:,}").replace("__NC__", str(nc)).replace("__NS__", str(ns))
             .replace("__CATOPTS__", cat_options)
             .replace("__COLLECTIONS__", json.dumps(collections or [], ensure_ascii=False))
-            .replace("__DEMOS__", json.dumps(demos or {}, ensure_ascii=False))
+            .replace("__DEMOS__", json.dumps(demos or {}, ensure_ascii=False).replace("<", "\\u003c"))
             .replace("__EGS__", json.dumps(egs, ensure_ascii=False))
             .replace("__FOOTER__", footer)
             .replace("__NOTE__", note)

@@ -24,6 +24,10 @@ collections = json.loads((ROOT / "data" / "collections.json").read_text(encoding
     if (ROOT / "data" / "collections.json").exists() else []
 demos = json.loads((ROOT / "data" / "category_demos.json").read_text(encoding="utf-8")) \
     if (ROOT / "data" / "category_demos.json").exists() else {}
+for _id, _d in demos.items():                       # inline per-category SVG result mockups (if any)
+    _svg = ROOT / "data" / "demos" / f"{_id}.svg"
+    if _svg.exists():
+        _d["svg"] = _svg.read_text(encoding="utf-8")
 
 _REPO = re.compile(r"github\.com/([^/#?]+)/([^/#?]+)", re.I)
 def repo_of(url):
