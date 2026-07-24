@@ -103,17 +103,15 @@ a{color:inherit;text-decoration:none}
 .demo.on{display:block}
 .demo-h{font-size:13px;font-weight:700;color:var(--ink2);margin:0 0 10px;letter-spacing:-.01em}
 .ba{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:12px}
-.ba-card{border-radius:14px;padding:15px 16px;border:1px solid var(--line2);display:flex;flex-direction:column;gap:8px}
+.ba-card{border-radius:14px;padding:13px 15px;border:1px solid var(--line2);display:flex;flex-direction:column;gap:9px}
 .ba-card.before{background:var(--panel-2)}
 .ba-card.after{background:var(--accent-soft);border-color:var(--accent)}
 .ba-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.05em}
 .ba-card.before .ba-tag{color:var(--faint)}
 .ba-card.after .ba-tag{color:var(--accent)}
-.ba-ic{font-size:26px;line-height:1}
-.ba-card.before .ba-ic{opacity:.5;filter:grayscale(.35)}
-.ba-card p{margin:0;font-size:13.5px;line-height:1.5}
-.ba-card.before p{color:var(--ink2)}
-.ba-card.after p{color:var(--ink)}
+.ba-tag em{font-style:normal;font-weight:500;font-family:var(--sans);font-size:12px;letter-spacing:0;color:var(--ink2);margin-left:7px}
+.ba-code{margin:0;font-family:var(--mono);font-size:12px;line-height:1.55;white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+.ba-card.before .ba-code{color:var(--ink2)}
 .ba-arrow{align-self:center;font-size:22px;font-weight:700;color:var(--accent)}
 @media(max-width:640px){.ba{grid-template-columns:1fr}.ba-arrow{transform:rotate(90deg)}}
 
@@ -232,10 +230,10 @@ egsEl=document.getElementById('egs'),themeBtn=document.getElementById('themeTogg
 const EGS=__EGS__,COLS=__COLLECTIONS__,DEMOS=__DEMOS__;let tier='all',mode='best';
 const demoEl=document.getElementById('demo');
 function renderDemo(id){if(!demoEl)return;const m=DEMOS[id];if(!m){demoEl.className='demo';demoEl.innerHTML='';return}
-  demoEl.innerHTML='<p class="demo-h">이 스킬들을 쓰면 이렇게 바뀌어요</p><div class="ba">'
-    +'<div class="ba-card before"><span class="ba-tag">BEFORE</span><span class="ba-ic">'+m.bi+'</span><p>'+esc(m.before)+'</p></div>'
+  demoEl.innerHTML='<p class="demo-h">이렇게 쓰면 이런 결과가 나와요</p><div class="ba">'
+    +'<div class="ba-card before"><span class="ba-tag">BEFORE<em>'+esc(m.bc)+'</em></span><pre class="ba-code">'+esc(m.b)+'</pre></div>'
     +'<div class="ba-arrow">→</div>'
-    +'<div class="ba-card after"><span class="ba-tag">AFTER</span><span class="ba-ic">'+m.ai+'</span><p>'+esc(m.after)+'</p></div></div>';
+    +'<div class="ba-card after"><span class="ba-tag">AFTER<em>'+esc(m.ac)+'</em></span><pre class="ba-code">'+esc(m.a)+'</pre></div></div>';
   demoEl.className='demo on'}
 
 /* theme toggle */
